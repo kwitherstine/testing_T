@@ -1,5 +1,7 @@
+# generic example - cumulus@leaf1$ cat /etc/ptm.d/topology.dot
 graph G {
-hostnametype="hostname"
-"MDC1-22-OCP-ACCESSA":"swp1"--"MDC1-22-OCP-ACCESSB":"swp1";
-"MDC1-22-OCP-ACCESSA":"swp49"--"MDC1-19-OCP-SPINEA":"swp31";
-"MDC1-22-OCP-ACCESSA":"swp50"--"MDC1-19-OCP-SPINEB":"swp31";
+  graph [hostidtype="hostname", version="1:0"];
+    "MDC1-22-OCP-ACCESSA":"swp1" -- "MDC1-22-OCP-ACCESSB":"swp1";
+    "MDC1-22-OCP-ACCESSA":"swp49" -- "MDC1-19-OCP-SPINEA":"swp31";
+    "MDC1-22-OCP-ACCESSA":"swp50" -- "MDC1-19-OCP-SPINEB":"swp31";
+}

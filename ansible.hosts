@@ -5,7 +5,7 @@ MDC1-19-OCP-SPINE[A:B]
 MDC1-22-OCP-ACCESS[A:B]
 
 [leafs]
-MDC1-19-DCOP-TOR[A:B]
+MDC1-19-DOCP-TOR[A:B]
 
 [network:children]
 spines
