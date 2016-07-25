@@ -23,11 +23,11 @@
 # The following line is the method to copy a SINGLE interfaces file to the ansible server as
 # a backup location. If using interfaces.d directory, use the next option in this file.
 
-   - name: backup single interfaces file
-     fetch:
-       dest=roles/leafs/{{ansible_hostname}}/interfaces
-       src=/etc/network/interfaces
-       flat=yes
+    - name: backup single interfaces file
+      fetch:
+        dest=roles/leafs/{{ansible_hostname}}/interfaces
+        src=/etc/network/interfaces
+        flat=yes
 
 # The following line is a way to copy the entire /etc/network/interfaces.d directory into a backup location. 
 # syncronize module would be preferred, but won't work with Vagrant for test environments.
