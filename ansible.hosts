@@ -12,7 +12,7 @@ spines
 access
 leafs
 
-[network:vars}
+[network:vars]
 ansible_connection=ssh
 ansible_user=cumulus
 ansible_sudo_pass=CumulusLinux!
