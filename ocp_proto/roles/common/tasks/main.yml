@@ -20,3 +20,12 @@
   tags:
     - ptm_setup
     - initial_setup
+    
+# change hostname because of Vagrant naming restrictions. Adding dashes back into hostname
+# to reflect whats in the topology.dot file
+- name: Change hostname for PTM
+  copy: src=hostname/{{ansible_hostname}} dest=/etc/hostname backup=yes
+#  notify: reboot device
+
+- name: Sudo hostname
+  shell: "sudo hostname"
