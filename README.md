@@ -7,4 +7,4 @@ ocp_proto directory contains a Vagrant + Ansible simulation of a 2 leaf, 4 spine
 
 ## Network Diagram:
 The topology for this demo can be seen here.
-![Diagram](opc-proto.png)
+![Diagram](opc_proto.png)
