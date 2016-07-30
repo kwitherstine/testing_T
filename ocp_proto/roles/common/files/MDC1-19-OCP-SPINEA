@@ -1,0 +1,242 @@
+# SpineA:
+# cumulus@MDC1-19-OCP-SPINEA$ cat /etc/network/interfaces
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5), ifup(8)
+#
+# Please see /usr/share/doc/python-ifupdown2/examples/ for examples
+#
+#
+ 
+# The loopback network interface
+auto lo
+iface lo inet loopback
+ 
+# The primary network interface
+auto eth0
+iface eth0 inet static
+        address 10.5.16.18
+        netmask 255.255.255.0
+        gateway 10.5.16.1
+ 
+ 
+ 
+# Bridges / VLANs
+#------------------
+ 
+auto bridge
+iface bridge
+        bridge-vlan-aware yes
+        bridge-ports swp1 swp23 swp25 swp26 swp27 swp28 swp29 swp30 swp31 swp32
+        bridge-vids 202-206 301 402-406 4010 4011 4013
+        bridge-stp on
+        bridge-pvid 1
+        bridge-mcsnoop 1
+ 
+# DOCP Admin
+auto bridge.202
+iface bridge.202
+        address 10.5.17.18/24
+        gateway 10.5.17.1
+ 
+# DOCP Storage
+auto bridge.203
+iface bridge.203
+ 
+# DOCP Management
+auto bridge.204
+iface bridge.204
+ 
+# DOCP Public
+auto bridge.205
+iface bridge.205
+        address 10.5.20.18/24
+        gateway 10.5.20.1
+ 
+# DOCP Private
+auto bridge.206
+iface bridge.206
+ 
+# HOCP
+auto bridge.301
+iface bridge.301
+        address 10.5.33.18/24
+        gateway 10.5.33.1
+ 
+# QOCP Admin
+auto bridge.402
+iface bridge.402
+        address 10.5.249.18/24
+        gateway 10.5.249.1
+ 
+# QOCP Storage
+auto bridge.403
+iface bridge.403
+ 
+# QOCP Management
+auto bridge.404
+iface bridge.404
+ 
+# QOCP Public
+auto bridge.405
+iface bridge.405
+        address 10.5.252.18/24
+        gateway 10.5.252.1
+ 
+# QOCP Private
+auto bridge.406
+iface bridge.406
+ 
+# vEPC MME
+auto bridge.4010
+iface bridge.4010
+ 
+# vEPC S1U
+auto bridge.4011
+iface bridge.4011
+ 
+# vEPC SGi
+auto bridge.4013
+iface bridge.4013
+ 
+ 
+ 
+# Switch Interfaces
+#--------------------
+ 
+# swp1 cabled to MTS-1-19-SPINEB swp1
+auto swp1
+iface swp1
+        bridge-vids 202-206 301 402-406 4010 4011 4013
+ 
+# swp2
+auto swp2
+iface swp2
+ 
+# swp3
+auto swp3
+iface swp3
+ 
+# swp4
+auto swp4
+iface swp4
+ 
+# swp5
+auto swp5
+iface swp5
+ 
+# swp6
+auto swp6
+iface swp6
+ 
+# swp7
+auto swp7
+iface swp7
+ 
+# swp8
+auto swp8
+iface swp8
+ 
+# swp9
+auto swp9
+iface swp9
+ 
+# swp10
+auto swp10
+iface swp10
+ 
+# swp11
+auto swp11
+iface swp11
+ 
+# swp12
+auto swp12
+iface swp12
+ 
+# swp13
+auto swp13
+iface swp13
+ 
+# swp14
+auto swp14
+iface swp14
+ 
+# swp15
+auto swp15
+iface swp15
+ 
+# swp16
+auto swp16
+iface swp16
+ 
+# swp17
+auto swp17
+iface swp17
+ 
+# swp18
+auto swp18
+iface swp18
+ 
+# swp19
+auto swp19
+iface swp19
+ 
+# swp20
+auto swp20
+iface swp20
+ 
+# swp21
+auto swp21
+iface swp21
+ 
+# swp22
+auto swp22
+iface swp22
+ 
+# swp23 cabled to MTS1-20-HOCP-TORA 54
+auto swp23
+iface swp23
+        bridge-vids 301
+ 
+# swp24
+auto swp24
+iface swp24
+ 
+# swp25 cabled to MTS1-20-VEPC-SGi Et1/2/5
+auto swp25
+iface swp25
+        bridge-access 4013
+ 
+# swp26 cabled to RR1-10-TOR-A et51/1
+auto swp26
+iface swp26
+        bridge-vids 4010 4011 4013
+ 
+# swp27 cabled to RR3-05-QOCP-TORA swp49
+auto swp27
+iface swp27
+        bridge-vids 402-406
+ 
+# swp28 cabled to RR3-05-QOCP-TORB swp49
+auto swp28
+iface swp28
+        bridge-vids 402-406
+ 
+# swp29 cabled to MDC1-19-DOCP-TORA swp49
+auto swp29
+iface swp29
+        bridge-vids 202-206
+ 
+# swp30 cabled to MDC1-19-DOCP-TORB swp49
+auto swp30
+iface swp30
+        bridge-vids 202-206
+ 
+# swp31 cabled to MDC1-22-OCP-ACCESSA swp49
+auto swp31
+iface swp31
+        bridge-vids 202-206 301 402-406 4010 4011 4013
+ 
+# swp32 cabled to MDC1-22-OCP-ACCESSB swp49
+auto swp32
+iface swp32
+        bridge-vids 202-206 301 402-406 4010 4011 4013

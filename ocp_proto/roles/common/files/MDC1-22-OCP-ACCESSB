@@ -1,0 +1,153 @@
+# root@MDC1-22-OCP-ACCESSB:/etc/network# cat interfaces
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5), ifup(8)
+#
+# Please see /usr/share/doc/python-ifupdown2/examples/ for examples
+#
+#
+ 
+# The loopback network interface
+auto lo
+iface lo inet loopback
+ 
+# The primary network interface
+auto eth0
+iface eth0 inet static
+        address 10.5.16.15
+        netmask 255.255.255.0
+        gateway 10.5.16.1
+ 
+ 
+ 
+# Bridges / VLANs
+#------------------
+ 
+auto bridge
+iface bridge
+        bridge-vlan-aware yes
+        bridge-ports swp1 swp49 swp50
+        bridge-vids 202-206 301 402-406 4010 4011 4013
+        bridge-stp on
+        bridge-pvid 1
+ 
+ 
+ 
+# DOCP
+auto bridge.202
+iface bridge.202
+        address 10.5.17.3
+        netmask 255.255.255.0
+        post-up vrrpd -n -D -i bridge.202 -v 22 -p 20 10.5.17.1
+        up ifplugd -i bridge.202 -b -d1 -p
+        down ifplugd -k -i bridge.202
+        pre-down kill $(cat /var/run/vrrpd_bridge.202_*.pid)
+ 
+auto bridge.203
+iface bridge.203
+ 
+auto bridge.204
+iface bridge.204
+ 
+auto bridge.205
+iface bridge.205
+        address 10.5.20.3
+        netmask 255.255.255.0
+        post-up vrrpd -n -D -i bridge.205 -v 25 -p 20 10.5.20.1
+        up ifplugd -i bridge.205 -b -d1 -p
+        down ifplugd -k -i bridge.205
+        pre-down kill $(cat /var/run/vrrpd_bridge.205_*.pid)
+ 
+auto bridge.206
+iface bridge.206
+ 
+ 
+ 
+# HOCP
+auto bridge.301
+iface bridge.301
+        address 10.5.33.3
+        netmask 255.255.255.0
+        post-up vrrpd -n -D -i bridge.301 -v 31 -p 20 10.5.33.1
+        up ifplugd -i bridge.301 -b -d1 -p
+        down ifplugd -k -i bridge.301
+        pre-down kill $(cat /var/run/vrrpd_bridge.301_*.pid)
+ 
+ 
+ 
+# QOCP
+auto bridge.402
+iface bridge.402
+        address 10.5.249.3
+        netmask 255.255.255.0
+        post-up vrrpd -n -D -i bridge.402 -v 42 -p 20 10.5.249.1
+        up ifplugd -i bridge.402 -b -d1 -p
+        down ifplugd -k -i bridge.402
+        pre-down kill $(cat /var/run/vrrpd_bridge.402_*.pid)
+ 
+auto bridge.403
+iface bridge.403
+ 
+auto bridge.404
+iface bridge.404
+ 
+auto bridge.405
+iface bridge.405
+        address 10.5.252.3
+        netmask 255.255.255.0
+        post-up vrrpd -n -D -i bridge.405 -v 45 -p 20 10.5.252.1
+        up ifplugd -i bridge.405 -b -d1 -p
+        down ifplugd -k -i bridge.405
+        pre-down kill $(cat /var/run/vrrpd_bridge.405_*.pid)
+ 
+auto bridge.406
+iface bridge.406
+ 
+ 
+ 
+# vEPC
+auto bridge.4010
+iface bridge.4010
+ 
+auto bridge.4011
+iface bridge.4011
+ 
+auto bridge.4013
+iface bridge.4013
+ 
+ 
+ 
+# Interfaces
+#-------------
+ 
+# swp1 cabled to MTS1-22-ACCESSA swp1
+auto swp1
+iface swp1
+        bridge-vids 202-206 301 402-406 4010 4011 4013
+ 
+# swp45 cabled to MDC1-19-DOCP-TORA swp46 10.202.40.216/30
+#auto swp45
+#iface swp45 inet static
+#       address 10.202.40.217
+#        netmask 255.255.255.252
+ 
+# swp46 cabled to MDC1-19-DOCP-TORB swp46 10.202.40.224/30
+#auto swp46
+#iface swp46 inet static
+#       address 10.202.40.225
+#        netmask 255.255.255.252
+ 
+# swp48 cabled to MDC1-MX240 xe-2/3/0
+auto swp48
+iface swp48 inet static
+        address 10.202.40.198
+        netmask 255.255.255.252
+ 
+# swp49 cabled to MDC1-19-OCP-SPINEA swp32
+auto swp49
+iface swp49
+        bridge-vids 202-206 301 402-406 4010 4011 4013
+ 
+# swp50 cabled to MDC1-19-OCP-SPINEB swp32
+auto swp50
+iface swp50
+        bridge-vids 202-206 301 402-406 4010 4011 4013

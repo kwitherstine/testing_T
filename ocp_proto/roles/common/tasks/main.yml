@@ -1,0 +1,22 @@
+---
+- name: Add Debian Apt Sources
+  apt_repository:
+    repo='deb http://ftp.us.debian.org/debian/ wheezy main contrib non-free'
+
+- name: Copy Interfaces file
+  copy: src={{hostname}} dest=/etc/network/interface backup=yes
+  notify: reload networking
+
+#Copy the topology file to the remote switches
+- name: configure ptmd topology.dot
+  copy: src=topology.dot dest=/etc/ptm.d/topology.dot
+  tags:
+    - ptm_setup
+    - initial_setup
+ 
+#Restart the PTM service to read in the new topology file
+- name: Restart ptmd service
+  service: name=ptmd state=restarted
+  tags:
+    - ptm_setup
+    - initial_setup
