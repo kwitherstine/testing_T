@@ -2,17 +2,17 @@
 # vi: set ft=ruby :
 
 groups = {
-  "access" => ["MDC1_22_OCP_ACCESSA", "MDC1_22_OCP_ACCESSB"],
-  "spines" => ["MDC1_19_OCP_SPINEA", "MDC1_19_OCP_SPINEB"],
-  "leafs" => ["MDC1_19_DOCP_TORA", "MDC1_19_DOCP_TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+  "access" => ["mdc122ocpaccessa", "mdc122ocpaccessb"],
+  "spines" => ["mdc119ocpspinea", "mdc119ocpspineb"],
+  "leafs" => ["mdc119docptora", "mdc119docptorb", "rr305qocptora", "rr305qocptorb"],
   "servers" => ["server1", "server2"],
   "network:children" => ["access", "spines", "leafs"],
-  "a-leafs" => ["MDC1_19_DOCP_TORA", "RR3_05_QOCP_TORA"],
-  "b-leafs" => ["MDC1_19_DOCP_TORB", "RR3_05_QOCP_TORB"],
-  "a-spines" => ["MDC1_19_OCP_SPINEA"],
-  "b-spines" => ["MDC1_19_OCP_SPINEB"],
-  "a-access" => ["MDC1_22_OCP_ACCESSA"],
-  "b-access" => ["MDC1_22_OCP_ACCESSB"]
+  "a-leafs" => ["mdc119docptora", "rr305qocptora"],
+  "b-leafs" => ["mdc119docptorb", "rr305qocptorb"],
+  "a-spines" => ["mdc119ocpspinea"],
+  "b-spines" => ["mdc119ocpspineb"],
+  "a-access" => ["mdc122ocpaccessa"],
+  "b-access" => ["mdc122ocpaccessb"]
 }
 
 
@@ -22,20 +22,20 @@ Vagrant.configure("2") do |config|
   server_image = "ubuntu/trusty64"
   link_seed = Random.rand(999.999).to_s
 
-  config.vm.define "MDC1_22_OCP_ACCESSA" do |MDC1_22_OCP_ACCESSA| 
-    MDC1_22_OCP_ACCESSA.vm.box = cumulus_image
-    MDC1_22_OCP_ACCESSA.vm.network "private_network",  virtualbox__intnet: 'MDC1_22_OCP_ACCESSA-MDC1_22_OCP_ACCESSB-' + link_seed, auto_config: false
-    MDC1_22_OCP_ACCESSA.vm.network "private_network",  virtualbox__intnet: 'MDC1_22_OCP_ACCESSA-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_22_OCP_ACCESSA.vm.network "private_network",  virtualbox__intnet: 'MDC1_22_OCP_ACCESSA-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_22_OCP_ACCESSA.vm.host_name = "MDC1_22_OCP_ACCESSA"
+  config.vm.define "mdc122ocpaccessa" do |mdc122ocpaccessa| 
+    mdc122ocpaccessa.vm.box = cumulus_image
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc122ocpaccessb-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.host_name = "mdc122ocpaccessa"
     
-    MDC1_22_OCP_ACCESSA.vm.provision "ansible" do |ansible|
+    mdc122ocpaccessa.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       #ansible.verbose = "vvv"
       ansible.playbook = "provision.yml"
     end
 
-    MDC1_22_OCP_ACCESSA.vm.provider "virtualbox" do |v|
+    mdc122ocpaccessa.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -44,20 +44,20 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "MDC1_22_OCP_ACCESSB" do |MDC1_22_OCP_ACCESSB|
-    MDC1_22_OCP_ACCESSB.vm.box = cumulus_image
-    MDC1_22_OCP_ACCESSB.vm.network "private_network",  virtualbox__intnet: 'MDC1_22_OCP_ACCESSA-MDC1_22_OCP_ACCESSB-' + link_seed, auto_config: false
-    MDC1_22_OCP_ACCESSB.vm.network "private_network",  virtualbox__intnet: 'MDC1_22_OCP_ACCESSB-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_22_OCP_ACCESSB.vm.network "private_network",  virtualbox__intnet: 'MDC1_22_OCP_ACCESSB-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_22_OCP_ACCESSB.vm.host_name = "MDC1_22_OCP_ACCESSB"
+  config.vm.define "mdc122ocpaccessb" do |mdc122ocpaccessb|
+    mdc122ocpaccessb.vm.box = cumulus_image
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc122ocpaccessb-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.host_name = "mdc122ocpaccessb"
     
-    MDC1_22_OCP_ACCESSB.vm.provision "ansible" do |ansible|
+    mdc122ocpaccessb.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       #ansible.verbose = "vvv"
       ansible.playbook = "provision.yml"
     end
 
-    MDC1_22_OCP_ACCESSB.vm.provider "virtualbox" do |v|
+    mdc122ocpaccessb.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -66,20 +66,20 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "MDC1_19_DOCP_TORA" do |MDC1_19_DOCP_TORA| 
-    MDC1_19_DOCP_TORA.vm.box = cumulus_image
-    MDC1_19_DOCP_TORA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-server1-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-MDC1_19_DOCP_TORB-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORA.vm.host_name = "MDC1_19_DOCP_TORA"
-    MDC1_19_DOCP_TORA.vm.provision "ansible" do |ansible|
+  config.vm.define "mdc119docptora" do |mdc119docptora| 
+    mdc119docptora.vm.box = cumulus_image
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-server1-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-mdc119docptorb-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119docptora.vm.host_name = "mdc119docptora"
+    mdc119docptora.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       #ansible.verbose = "vvv"
       ansible.playbook = "provision.yml"
     end
 
-    MDC1_19_DOCP_TORA.vm.provider "virtualbox" do |v|
+    mdc119docptora.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -88,20 +88,20 @@ Vagrant.configure("2") do |config|
     end
   end
   
-  config.vm.define "MDC1_19_DOCP_TORB" do |MDC1_19_DOCP_TORB|
-    MDC1_19_DOCP_TORB.vm.box = cumulus_image 
-    MDC1_19_DOCP_TORB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORB-server1-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-MDC1_19_DOCP_TORB-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORB-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORB-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_DOCP_TORB.vm.host_name = "MDC1_19_DOCP_TORB"
+  config.vm.define "mdc119docptorb" do |mdc119docptorb|
+    mdc119docptorb.vm.box = cumulus_image 
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-server1-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-mdc119docptorb-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119docptorb.vm.host_name = "mdc119docptorb"
     
-    MDC1_19_DOCP_TORB.vm.provision "ansible" do |ansible|
+    mdc119docptorb.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       ansible.playbook = "provision.yml"
     end
 
-    MDC1_19_DOCP_TORB.vm.provider "virtualbox" do |v|
+    mdc119docptorb.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -110,18 +110,18 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "RR3_05_QOCP_TORA" do |RR3_05_QOCP_TORA| 
-    RR3_05_QOCP_TORA.vm.box = cumulus_image
-    RR3_05_QOCP_TORA.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORA-server2-' + link_seed, auto_config: false
-    RR3_05_QOCP_TORA.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORA-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    RR3_05_QOCP_TORA.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORA-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    RR3_05_QOCP_TORA.vm.host_name = "RR3_05_QOCP_TORA"
-    RR3_05_QOCP_TORA.vm.provision "ansible" do |ansible|
+  config.vm.define "rr305qocptora" do |rr305qocptora| 
+    rr305qocptora.vm.box = cumulus_image
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-server2-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-mdc119ocpspinea-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-mdc119ocpspineb-' + link_seed, auto_config: false
+    rr305qocptora.vm.host_name = "rr305qocptora"
+    rr305qocptora.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       ansible.playbook = "provision.yml"
     end
 
-    RR3_05_QOCP_TORA.vm.provider "virtualbox" do |v|
+    rr305qocptora.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -130,19 +130,19 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "RR3_05_QOCP_TORB" do |RR3_05_QOCP_TORB| 
-    RR3_05_QOCP_TORB.vm.box = cumulus_image
-    RR3_05_QOCP_TORB.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORB-server2-' + link_seed, auto_config: false
-    RR3_05_QOCP_TORB.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORB-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    RR3_05_QOCP_TORB.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORB-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    RR3_05_QOCP_TORB.vm.host_name = "RR3_05_QOCP_TORB"
+  config.vm.define "rr305qocptorb" do |rr305qocptorb| 
+    rr305qocptorb.vm.box = cumulus_image
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-server2-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-mdc119ocpspinea-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-mdc119ocpspineb-' + link_seed, auto_config: false
+    rr305qocptorb.vm.host_name = "rr305qocptorb"
     
-    RR3_05_QOCP_TORB.vm.provision "ansible" do |ansible|
+    rr305qocptorb.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       ansible.playbook = "provision.yml"
     end
 
-    RR3_05_QOCP_TORB.vm.provider "virtualbox" do |v|
+    rr305qocptorb.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -151,23 +151,23 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "MDC1_19_OCP_SPINEA" do |MDC1_19_OCP_SPINEA| 
-    MDC1_19_OCP_SPINEA.vm.box = cumulus_image
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_OCP_SPINEA-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEA.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORA-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEA.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORB-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORB-MDC1_19_OCP_SPINEA-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_OCP_SPINEA-MDC1_22_OCP_ACCESSA-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEA.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_OCP_SPINEA-MDC1_22_OCP_ACCESSB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEA.vm.host_name = "MDC1_19_OCP_SPINEA"
+  config.vm.define "mdc119ocpspinea" do |mdc119ocpspinea| 
+    mdc119ocpspinea.vm.box = cumulus_image
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc122ocpaccessa-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc122ocpaccessb-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.host_name = "mdc119ocpspinea"
     
-    MDC1_19_OCP_SPINEA.vm.provision "ansible" do |ansible|
+    mdc119ocpspinea.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       ansible.playbook = "provision.yml"
     end
 
-    MDC1_19_OCP_SPINEA.vm.provider "virtualbox" do |v|
+    mdc119ocpspinea.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -179,23 +179,23 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "MDC1_19_OCP_SPINEB" do |MDC1_19_OCP_SPINEB| 
-    MDC1_19_OCP_SPINEB.vm.box = cumulus_image
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_OCP_SPINEA-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORA-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORB-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORB-MDC1_19_OCP_SPINEB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_OCP_SPINEA-MDC1_22_OCP_ACCESSA-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEB.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_OCP_SPINEA-MDC1_22_OCP_ACCESSB-' + link_seed, auto_config: false
-    MDC1_19_OCP_SPINEB.vm.host_name = "MDC1_19_OCP_SPINEB"
+  config.vm.define "mdc119ocpspineb" do |mdc119ocpspineb| 
+    mdc119ocpspineb.vm.box = cumulus_image
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc122ocpaccessa-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc122ocpaccessb-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.host_name = "mdc119ocpspineb"
     
-    MDC1_19_OCP_SPINEB.vm.provision "ansible" do |ansible|
+    mdc119ocpspineb.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       ansible.playbook = "provision.yml"
     end
 
-    MDC1_19_OCP_SPINEB.vm.provider "virtualbox" do |v|
+    mdc119ocpspineb.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -210,8 +210,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "server1" do |server1| 
     server1.vm.box = server_image
-    server1.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORA-server1-' + link_seed, auto_config: false
-    server1.vm.network "private_network",  virtualbox__intnet: 'MDC1_19_DOCP_TORB-server1-' + link_seed, auto_config: false
+    server1.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-server1-' + link_seed, auto_config: false
+    server1.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-server1-' + link_seed, auto_config: false
     server1.vm.host_name = "server1"
     
     server1.vm.provision "ansible" do |ansible|
@@ -228,8 +228,8 @@ Vagrant.configure("2") do |config|
   
   config.vm.define "server2" do |server2| 
     server2.vm.box = server_image
-    server2.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORA-server2-' + link_seed, auto_config: false
-    server2.vm.network "private_network",  virtualbox__intnet: 'RR3_05_QOCP_TORB-server2-' + link_seed, auto_config: false
+    server2.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-server2-' + link_seed, auto_config: false
+    server2.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-server2-' + link_seed, auto_config: false
     server2.vm.host_name = "server2"
     
     server2.vm.provision "ansible" do |ansible|
