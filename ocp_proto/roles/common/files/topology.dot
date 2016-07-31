@@ -11,18 +11,20 @@ graph G {
     "MDC1-22-OCP-ACCESSB":"swp50" -- "MDC1-19-OCP-SPINEB":"swp32";
     "MDC1-19-OCP-SPINEA":"swp1" -- "MDC1-19-OCP-SPINEB":"swp1";
     "MDC1-19-OCP-SPINEA":"swp23" -- "MTS1-20-HOCP-TORA":"eth54";
-    "MDC1-19-OCP-SPINEA":"swp25" -- "MTS1-20-VECP-SGi":"et1/2/5";
+    "MDC1-19-OCP-SPINEA":"swp25" -- "RR3-05-QOCP-TORA":"swp49";
     "MDC1-19-OCP-SPINEA":"swp26" -- "RR1-10-TOR-A":"et51/1";
     "MDC1-19-OCP-SPINEA":"swp27" -- "RR3-05-QOCP-TORA":"swp49";
     "MDC1-19-OCP-SPINEA":"swp28" -- "RR3-05-QOCP-TORB":"swp49";
     "MDC1-19-OCP-SPINEA":"swp29" -- "MDC1-19-DOCP-TORA":"swp49";
     "MDC1-19-OCP-SPINEA":"swp30" -- "MDC1-19-DOCP-TORB":"swp49";
     "MDC1-19-OCP-SPINEB":"swp23" -- "MTS1-20-HOCP-TORB":"54";
-    "MDC1-19-OCP-SPINEB":"swp25" -- "MTS1-20-VEPC-S1U":"Et1/2/5";
+    "MDC1-19-OCP-SPINEB":"swp25" -- "RR3-05-QOCP-TORA":"swp50";
     "MDC1-19-OCP-SPINEB":"swp26" -- "RR1-10-TOR-A":"et51/1";
     "MDC1-19-OCP-SPINEB":"swp27" -- "RR3-05-QOCP-TORA":"swp50";
     "MDC1-19-OCP-SPINEB":"swp28" -- "RR3-05-QOCP-TORB":"swp50";
     "MDC1-19-OCP-SPINEB":"swp29" -- "MDC1-19-DOCP-TORA":"swp50";
     "MDC1-19-OCP-SPINEB":"swp30" -- "MDC1-19-DOCP-TORB":"swp50";
     "MDC1-19-DOCP-TORA":"swp47" -- "MDC1-19-DOCP-TORB":"swp47";
+    "RR3-05-QOCP-TORA":"swp51" -- "RR3-05-QOCP-TORB":"swp51";
+    "RR3-05-QOCP-TORA":"swp52" -- "RR3-05-QOCP-TORB":"swp52"
 }
