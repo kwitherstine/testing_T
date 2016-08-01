@@ -28,7 +28,7 @@ auto bridge
 iface bridge
     bridge-vlan-aware yes
     bridge-vids 403 404 405 406
-    bridge-ports swp1 swp2 swp3 swp4 swp5 swp6 swp7 swp8 swp9 swp10 swp11 swp12 swp13 swp14 swp15 swp16 swp17 swp18 swp19 swp20 swp21 swp22 swp23 swp24 swp25 swp26 swp27 swp28 swp29 swp30 swp31 swp32 swp33 swp34 swp35 swp36 swp37 swp38 swp39 swp40 swp41 swp42 swp43 swp44 swp49 swp50 swp51 swp52
+    bridge-ports swp1 swp2 swp3 swp4 swp5 swp6 swp37 swp38 swp39 swp40 swp41 swp42 swp43 swp44 swp49 swp50 swp51 swp52
     bridge-stp on
     bridge-pvid 1
 
@@ -82,54 +82,6 @@ iface swp5
 # QOCP-6 GE-1
 auto swp6
 iface swp6
-
-# QOCP-1 XE-1
-auto swp13
-iface swp13
-
-# QOCP-2 XE-1
-auto swp14
-iface swp14
-
-# QOCP-3 XE-1
-auto swp15
-iface swp15
-
-# QOCP-4 XE-1
-auto swp16
-iface swp16
-
-# QOCP-5 XE-1
-auto swp17
-iface swp17
-
-# QOCP-6 XE-1
-auto swp18
-iface swp18
-
-# QOCP-7 XE-1
-auto swp25
-iface swp25
-
-# QOCP-8 XE-1
-auto swp26
-iface swp26
-
-# QOCP-9 XE-1
-auto swp27
-iface swp27
-
-# QOCP-10 XE-1
-auto swp28
-iface swp28
-
-# QOCP-11 XE-1
-auto swp29
-iface swp29
-
-# QOCP-12 XE-1
-auto swp30
-iface swp30
 
 # QOCP-7 GE-1
 auto swp37
