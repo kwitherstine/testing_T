@@ -1,0 +1,272 @@
+# TORB:
+# cumulus@MDC1-19-DOCP-TORB$ cat /etc/network/interfaces
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5), ifup(8)
+#
+# Please see /usr/share/doc/python-ifupdown2/examples/ for examples
+#
+#
+ 
+# The loopback network interface
+auto lo
+iface lo inet loopback
+ 
+# The primary network interface
+auto eth0
+iface eth0 inet static
+        address 10.5.16.12
+        netmask 255.255.255.0
+        gateway 10.5.16.1
+ 
+ 
+ 
+# Bridges / VLANs
+#------------------
+ 
+auto bridge
+iface bridge
+        bridge-vlan-aware yes
+        bridge-vids 202 203 204 205 206
+        bridge-ports swp1 swp2 swp3 swp4 swp5 swp6 swp7 swp8 swp9 swp10 swp11 swp12 swp13 swp14 swp15 swp16 swp17 swp18 swp19 swp20 swp21 swp22 swp23 swp24 swp25 swp26 swp27 swp28 swp29 swp30 swp31 swp32 swp33 swp34 swp35 swp36 swp37 swp38 swp39 swp40 swp41 swp42 swp43 swp44 swp49 swp50
+        bridge-stp on
+        bridge-pvid 202
+ 
+auto bridge.202
+iface bridge.202
+        address 10.5.17.12/24
+        gateway 10.5.17.1
+ 
+auto bridge.203
+iface bridge.203
+ 
+auto bridge.204
+iface bridge.204
+ 
+auto bridge.205
+iface bridge.205
+        address 10.5.20.12/24
+        gateway 10.5.20.1
+ 
+auto bridge.206
+iface bridge.206
+ 
+ 
+ 
+# Interfaces
+#-------------
+ 
+# DOCP-20 enp129s0f1
+auto swp1
+iface swp1
+        bridge-pvid 202
+ 
+auto swp2
+iface swp2
+ 
+# DOCP-19 enp129s0f1
+auto swp3
+iface swp3
+        bridge-pvid 202
+ 
+auto swp4
+iface swp4
+ 
+# DOCP-18 enp129s0f1
+auto swp5
+iface swp5
+        bridge-pvid 202
+ 
+auto swp6
+iface swp6
+ 
+auto swp7
+iface swp7
+ 
+# DOCP-17 enp129s0f1
+auto swp8
+iface swp8
+        bridge-pvid 202
+ 
+# DOCP-16 enp129s0f1
+auto swp9
+iface swp9
+        bridge-pvid 202
+ 
+auto swp10
+iface swp10
+ 
+# DOCP-15 enp129s0f1
+auto swp11
+iface swp11
+        bridge-pvid 202
+ 
+auto swp12
+iface swp12
+ 
+# DOCP-14 enp129s0f1
+auto swp13
+iface swp13
+        bridge-pvid 202
+ 
+auto swp14
+iface swp14
+ 
+auto swp15
+iface swp15
+ 
+# DOCP-13 enp129s0f1
+auto swp16
+iface swp16
+        bridge-pvid 202
+ 
+auto swp17
+iface swp17
+ 
+auto swp18
+iface swp18
+ 
+auto swp19
+iface swp19
+ 
+# DOCP-3 enp129s0f1
+auto swp20
+iface swp20
+#       bridge-pvid 202
+ 
+# DOCP-6 enp129s0f1
+auto swp21
+iface swp21
+        bridge-pvid 202
+ 
+auto swp22
+iface swp22
+ 
+auto swp23
+iface swp23
+ 
+auto swp24
+iface swp24
+ 
+auto swp25
+iface swp25
+ 
+auto swp26
+iface swp26
+ 
+auto swp27
+iface swp27
+ 
+# DOCP-9 enp129s0f1
+auto swp28
+iface swp28
+        bridge-pvid 202
+ 
+# DOCP-11 enp129s0f1
+auto swp29
+iface swp29
+        bridge-pvid 202
+ 
+auto swp30
+iface swp30
+ 
+# DOCP-5 enp129s0f1
+auto swp31
+iface swp31
+        bridge-pvid 202
+ 
+# DOCP-8 enp129s0f1
+auto swp32
+iface swp32
+        bridge-pvid 202
+ 
+# DOCP-2 enp129s0f1
+auto swp33
+iface swp33
+#       bridge-pvid 202
+ 
+# DOCP-12 enp129s0f1
+auto swp34
+iface swp34
+        bridge-pvid 202
+ 
+auto swp35
+iface swp35
+ 
+auto swp36
+iface swp36
+ 
+# DOCP-1 enp1s0f1               Fuel Server
+auto swp37
+iface swp37
+#       bridge-access 202
+        bridge-pvid 202
+ 
+auto swp38
+iface swp38
+ 
+# DOCP-10 enp129s0f1
+auto swp39
+iface swp39
+        bridge-pvid 202
+ 
+# DOCP-7 enp129s0f1
+auto swp40
+iface swp40
+        bridge-pvid 202
+ 
+# DOCP-1 enp129s0f1             Fuel Server
+auto swp41
+iface swp41
+#       bridge-access 202
+        bridge-pvid 202
+ 
+auto swp42
+iface swp42
+ 
+# DOCP-4 enp129s0f1
+auto swp43
+iface swp43
+        bridge-pvid 202
+ 
+auto swp44
+iface swp44
+ 
+# swp45 cabled to MDC1-22-OCP-ACCESSA swp46 10.202.40.220/30
+#auto swp45
+#iface swp45 inet static
+#       address 10.202.40.222
+#        netmask 255.255.255.252
+ 
+# swp46 cabled to MDC1-22-OCP-ACCESSB swp46 10.202.40.224/30
+#auto swp46
+#iface swp46 inet static
+#       address 10.202.40.226
+#        netmask 255.255.255.252
+ 
+# swp47 cabled to MDC1-19-DOCP-TORA swp47
+auto swp47
+iface swp47
+        bridge-vids 202 203 204 205 206
+ 
+# swp48 not cabled
+#auto swp48
+#iface swp48
+#       bridge-vids 201 202 203 204 205
+ 
+# swp49 cabled to MDC1-19-OCP-SPINEA swp30
+auto swp49
+iface swp49
+        bridge-vids 202 203 204 205 206
+        bridge-pvid 1
+#iface swp49 inet static
+#        address 10.5.255.22
+#        netmask 255.255.255.252
+ 
+# swp50 cabled to MDC1-19-OCP-SPINEB swp30
+auto swp50
+iface swp50
+        bridge-vids 202 203 204 205 206
+        bridge-pvid 1
+#iface swp50 inet static
+#        address 10.5.255.30
+#        netmask 255.255.255.252

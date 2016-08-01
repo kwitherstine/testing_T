@@ -1,0 +1,195 @@
+#
+#
+# This isn't the actual config file.... edited version from QOCP-TORB
+#
+# root@RR3-05-QOCP-TORB:~# cat /etc/network/interfaces
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5), ifup(8)
+#
+# Please see /usr/share/doc/python-ifupdown2/examples/ for examples
+#
+#
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet static
+    address 10.5.248.11
+    netmask 255.255.255.0
+    gateway 10.5.248.1
+
+# Bridges / VLANs
+#------------------
+
+auto bridge
+iface bridge
+    bridge-vlan-aware yes
+    bridge-vids 403 404 405 406
+    bridge-ports swp1 swp2 swp3 swp4 swp5 swp6 swp7 swp8 swp9 swp10 swp11 swp12 swp13 swp14 swp15 swp16 swp17 swp18 swp19 swp20 swp21 swp22 swp23 swp24 swp25 swp26 swp27 swp28 swp29 swp30 swp31 swp32 swp33 swp34 swp35 swp36 swp37 swp38 swp39 swp40 swp41 swp42 swp43 swp44 swp49 swp50 swp51 swp52
+    bridge-stp on
+    bridge-pvid 1
+
+#Admin,PXE VLAN 402
+auto bridge.402
+iface bridge.402
+    address 10.5.249.11/24
+    gateway 10.5.249.1
+
+#Storage, VLAN 403
+auto bridge.403
+iface bridge.403
+
+#Management, VLAN 404
+auto bridge.404
+iface bridge.404
+
+#Public, VLAN 405
+auto bridge.405
+iface bridge.405
+    address 10.5.252.11/24
+    gateway 10.5.252.1
+
+#Private, VLAN 406
+auto bridge.406
+iface bridge.406
+
+# Interfaces
+#-------------
+
+# QOCP-1 GE-1
+auto swp1
+iface swp1
+
+# QOCP-2 GE-1
+auto swp2
+iface swp2
+
+# QOCP-3 GE-1
+auto swp3
+iface swp3
+
+# QOCP-4 GE-1
+auto swp4
+iface swp4
+
+# QOCP-5 GE-1
+auto swp5
+iface swp5
+
+# QOCP-6 GE-1
+auto swp6
+iface swp6
+
+# QOCP-1 XE-1
+auto swp13
+iface swp13
+
+# QOCP-2 XE-1
+auto swp14
+iface swp14
+
+# QOCP-3 XE-1
+auto swp15
+iface swp15
+
+# QOCP-4 XE-1
+auto swp16
+iface swp16
+
+# QOCP-5 XE-1
+auto swp17
+iface swp17
+
+# QOCP-6 XE-1
+auto swp18
+iface swp18
+
+# QOCP-7 XE-1
+auto swp25
+iface swp25
+
+# QOCP-8 XE-1
+auto swp26
+iface swp26
+
+# QOCP-9 XE-1
+auto swp27
+iface swp27
+
+# QOCP-10 XE-1
+auto swp28
+iface swp28
+
+# QOCP-11 XE-1
+auto swp29
+iface swp29
+
+# QOCP-12 XE-1
+auto swp30
+iface swp30
+
+# QOCP-7 GE-1
+auto swp37
+iface swp37
+
+# QOCP-8 GE-1
+auto swp38
+iface swp38
+    bridge-access 402
+
+# QOCP-9 GE-1
+auto swp39
+iface swp39
+
+# QOCP-10 GE-1
+auto swp40
+iface swp40
+
+# QOCP-11 GE-1
+auto swp41
+iface swp41
+
+# QOCP-12 GE-1
+auto swp42
+iface swp42
+
+# swp48 cabled to MTS1-???
+# Possibly deprecated due to swp51/swp52 - TBD
+auto swp48
+iface swp48
+    bridge-vids 403 404 405 406
+
+# swp49 cabled to MTS1-19-SPINEA swp25
+auto swp49
+iface swp49
+    bridge-vids 402 403 404 405 406
+
+# swp50 cabled to MTS1-19-SPINEB swp25
+auto swp50
+iface swp50
+    bridge-vids 402 403 404 405 406
+
+# swp51 cabled to RR3-05-QOCP-TORB swp51 (cross-link)
+auto swp51
+iface swp51 inet static
+#    address 10.5.254.2
+#    netmask 255.255.255.252
+#    broadcast 10.5.254.3
+    link-speed 40000
+    link-duplex full
+    link-autoneg off
+    bridge-vids 402 403 404 405 406
+
+# swp52 cabled to RR3-05-QOCP-TORB swp52 (cross-link)
+auto swp52
+iface swp52 inet static
+#    address 10.5.254.6
+#    netmask 255.255.255.252
+#    broadcast 10.5.254.7
+    link-speed 40000
+    link-duplex full
+    link-autoneg off
+    bridge-vids 402 403 404 405 406
