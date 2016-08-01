@@ -1,10 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# I've removed swp10-30 on the 54 port switches because of problems with vagrant scale to only 36 network devices
-
 groups = {
-  "access" => ["mdc1-22-ocp-accessa", "mdc122ocpaccessb"],
+  "access" => ["mdc122ocpaccessa", "mdc122ocpaccessb"],
   "spines" => ["mdc119ocpspinea", "mdc119ocpspineb"],
   "leafs" => ["mdc119docptora", "mdc119docptorb", "rr305qocptora", "rr305qocptorb"],
   "servers" => ["server1", "server2"],
@@ -13,7 +11,7 @@ groups = {
   "b-leafs" => ["mdc119docptorb", "rr305qocptorb"],
   "a-spines" => ["mdc119ocpspinea"],
   "b-spines" => ["mdc119ocpspineb"],
-  "a-access" => ["mdc1-22-ocp-accessa"],
+  "a-access" => ["mdc122ocpaccessa"],
   "b-access" => ["mdc122ocpaccessb"]
 }
 
@@ -24,50 +22,71 @@ Vagrant.configure("2") do |config|
   server_image = "ubuntu/trusty64"
   link_seed = Random.rand(999.999).to_s
 
-  config.vm.define "mdc1-22-ocp-accessa" do |mdc1-22-ocp-accessa| 
-    mdc1-22-ocp-accessa.vm.box = cumulus_image
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-mdc122ocpaccessb-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp2-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp3-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp4-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp5-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp6-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp7-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp8-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp9-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp31-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp32-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp33-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp34-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp35-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp36-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp37-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp38-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp39-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp40-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp41-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp42-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp43-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp44-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp45-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp46-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp47-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp48-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-mdc119ocpspinea-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-mdc119ocpspineb-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp51-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp52-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp53-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-swp54-' + link_seed, auto_config: false
-    mdc1-22-ocp-accessa.vm.host_name = "mdc1-22-ocp-accessa"
+  config.vm.define "mdc122ocpaccessa" do |mdc122ocpaccessa| 
+    mdc122ocpaccessa.vm.box = cumulus_image
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc122ocpaccessb-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp2-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp3-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp4-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp5-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp6-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp7-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp8-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp9-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp10-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp11-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp12-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp13-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp14-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp15-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp16-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp17-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp18-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp19-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp20-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp21-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp22-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp23-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp24-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp25-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp26-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp27-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp28-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp29-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp30-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp31-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp32-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp33-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp34-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp35-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp36-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp37-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp38-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp39-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp40-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp41-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp42-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp43-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp44-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp45-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp46-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp47-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp48-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc119ocpspinea-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp51-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp52-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp53-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-swp54-' + link_seed, auto_config: false
+    mdc122ocpaccessa.vm.host_name = "mdc122ocpaccessa"
     
-    mdc1-22-ocp-accessa.vm.provision "ansible" do |ansible|
+    mdc122ocpaccessa.vm.provision "ansible" do |ansible|
       ansible.groups = groups
       #ansible.verbose = "vvv"
       ansible.playbook = "provision.yml"
     end
 
-    mdc1-22-ocp-accessa.vm.provider "virtualbox" do |v|
+    mdc122ocpaccessa.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
@@ -77,6 +96,27 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
@@ -106,7 +146,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "mdc122ocpaccessb" do |mdc122ocpaccessb|
     mdc122ocpaccessb.vm.box = cumulus_image
-    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-mdc122ocpaccessb-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc122ocpaccessb-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp2-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp3-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp4-' + link_seed, auto_config: false
@@ -115,6 +155,27 @@ Vagrant.configure("2") do |config|
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp7-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp8-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp9-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp10-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp11-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp12-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp13-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp14-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp15-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp16-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp17-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp18-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp19-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp20-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp21-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp22-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp23-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp24-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp25-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp26-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp27-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp28-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp29-' + link_seed, auto_config: false
+    mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp30-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp31-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp32-' + link_seed, auto_config: false
     mdc122ocpaccessb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-swp33-' + link_seed, auto_config: false
@@ -157,6 +218,27 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
@@ -195,13 +277,34 @@ Vagrant.configure("2") do |config|
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp7-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp8-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp9-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp10-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp11-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp12-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp13-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp14-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp15-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp16-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp17-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp18-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp19-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp20-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp21-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp22-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp23-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp24-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp25-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-server1-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp27-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp28-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp29-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp30-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp31-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp32-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp33-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp34-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp35-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp36-' + link_seed, auto_config: false
-    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-server1-' + link_seed, auto_config: false
+    mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp37-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp38-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp39-' + link_seed, auto_config: false
     mdc119docptora.vm.network "private_network",  virtualbox__intnet: 'mdc119docptora-swp40-' + link_seed, auto_config: false
@@ -237,6 +340,27 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
@@ -275,6 +399,27 @@ Vagrant.configure("2") do |config|
     mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp7-' + link_seed, auto_config: false
     mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp8-' + link_seed, auto_config: false
     mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp9-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp10-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp11-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp12-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp13-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp14-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp15-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp16-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp17-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp18-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp19-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp20-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp21-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp22-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp23-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp24-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp25-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp26-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp27-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp28-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp29-' + link_seed, auto_config: false
+    mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp30-' + link_seed, auto_config: false
     mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp31-' + link_seed, auto_config: false
     mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp32-' + link_seed, auto_config: false
     mdc119docptorb.vm.network "private_network",  virtualbox__intnet: 'mdc119docptorb-swp33-' + link_seed, auto_config: false
@@ -316,6 +461,27 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
@@ -354,6 +520,27 @@ Vagrant.configure("2") do |config|
     rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp7-' + link_seed, auto_config: false
     rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp8-' + link_seed, auto_config: false
     rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp9-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp10-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp11-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp12-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp13-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp14-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp15-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp16-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp17-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp18-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp19-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp20-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp21-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp22-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp23-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp24-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp25-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp26-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp27-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp28-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp29-' + link_seed, auto_config: false
+    rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp30-' + link_seed, auto_config: false
     rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp31-' + link_seed, auto_config: false
     rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp32-' + link_seed, auto_config: false
     rr305qocptora.vm.network "private_network",  virtualbox__intnet: 'rr305qocptora-swp33-' + link_seed, auto_config: false
@@ -395,6 +582,27 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
@@ -433,6 +641,27 @@ Vagrant.configure("2") do |config|
     rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp7-' + link_seed, auto_config: false
     rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp8-' + link_seed, auto_config: false
     rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp9-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp10-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp11-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp12-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp13-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp14-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp15-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp16-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp17-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp18-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp19-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp20-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp21-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp22-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp23-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp24-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp25-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp26-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp27-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp28-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp29-' + link_seed, auto_config: false
+    rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp30-' + link_seed, auto_config: false
     rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp31-' + link_seed, auto_config: false
     rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp32-' + link_seed, auto_config: false
     rr305qocptorb.vm.network "private_network",  virtualbox__intnet: 'rr305qocptorb-swp33-' + link_seed, auto_config: false
@@ -474,6 +703,27 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
       v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
@@ -533,7 +783,7 @@ Vagrant.configure("2") do |config|
     mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-rr305qocptorb-' + link_seed, auto_config: false
     mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc119docptora-' + link_seed, auto_config: false
     mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc119docptorb-' + link_seed, auto_config: false
-    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc1-22-ocp-accessa-' + link_seed, auto_config: false
+    mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc122ocpaccessa-' + link_seed, auto_config: false
     mdc119ocpspinea.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspinea-mdc122ocpaccessb-' + link_seed, auto_config: false
     mdc119ocpspinea.vm.host_name = "mdc119ocpspinea"
     
@@ -610,7 +860,7 @@ Vagrant.configure("2") do |config|
     mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspineb-rr305qocptorb-' + link_seed, auto_config: false
     mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspineb-mdc119docptora-' + link_seed, auto_config: false
     mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc119ocpspineb-mdc119docptorb-' + link_seed, auto_config: false
-    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc1-22-ocp-accessa-mdc119ocpspineb-' + link_seed, auto_config: false
+    mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessa-mdc119ocpspineb-' + link_seed, auto_config: false
     mdc119ocpspineb.vm.network "private_network",  virtualbox__intnet: 'mdc122ocpaccessb-mdc119ocpspineb-' + link_seed, auto_config: false
     mdc119ocpspineb.vm.host_name = "mdc119ocpspineb"
     
