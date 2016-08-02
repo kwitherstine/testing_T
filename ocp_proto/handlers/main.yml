@@ -38,3 +38,6 @@
   register: networking_reload
   notify: print networking reload error
   changed_when: "networking_reload.stderr != ''"
+  
+- name: reboot device
+  shell: "sudo reboot"

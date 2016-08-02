@@ -1,0 +1,4 @@
+---
+- name: sudo reboot
+  become: yes
+  shell: "reboot"

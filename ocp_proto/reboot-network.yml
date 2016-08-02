@@ -1,0 +1,7 @@
+---
+- hosts: network
+  become: yes
+  roles:
+    - reboot
+  handlers:
+    - include: handlers/main.yml
