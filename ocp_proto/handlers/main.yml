@@ -1,11 +1,13 @@
 ---
 - name: reload networking
-  shell: "service networking reload"
+  become: yes
+  shell: "systemctl restart networking"
   register: networking_reload
   notify: print networking reload error
   changed_when: "networking_reload.stderr != ''"
 
 - name: reload quagga
+  become: yes
   shell: "service quagga reload"
   register: quagga_reload
   notify: print quagga reload error
@@ -28,16 +30,13 @@
   service: name=clcmd_server state=started enabled=yes
   
 - name: restart switchd
+  become: yes
   service: name=switchd state=restarted
   
 - name: restart quagga
+  become: yes
   service: name=quagga state=restarted
   
-- name: reload networking
-  shell: "service networking reload"
-  register: networking_reload
-  notify: print networking reload error
-  changed_when: "networking_reload.stderr != ''"
-  
 - name: reboot device
-  shell: "sudo reboot"
+  become: yes
+  shell: "reboot"
