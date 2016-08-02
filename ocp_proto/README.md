@@ -23,7 +23,7 @@ All configuration is driven through [Ansible](http://ansible.com). The intention
 ## Network Diagram:
 The topology for this demo can be seen below.
 
-![Diagram](https://github.com/kwitherstine/testing_T/blob/master/ocp_proto.png)
+![Diagram](https://github.com/kwitherstine/testing_T/blob/master/ocp_proto/ocp_proto.png)
 
 # Requirements
 The following are a list of required software to run this project.
