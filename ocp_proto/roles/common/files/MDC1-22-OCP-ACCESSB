@@ -11,11 +11,13 @@ auto lo
 iface lo inet loopback
  
 # The primary network interface
+# for vagrant only, commenting out eth0 or it crashes
 auto eth0
-iface eth0 inet static
-        address 10.5.16.15
-        netmask 255.255.255.0
-        gateway 10.5.16.1
+iface eth0 inet dhcp
+#iface eth0 inet static
+#        address 10.5.16.15
+#        netmask 255.255.255.0
+#        gateway 10.5.16.1
  
  
  
