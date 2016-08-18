@@ -1,0 +1,28 @@
+# generic example - cumulus@leaf1$ cat /etc/ptm.d/topology.dot
+graph G {
+ "MDC1-19-DOCP-TORA" [function="leaf" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
+ "MDC1-19-DOCP-TORB" [function="leaf" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
+ "RR3-05-QOCP-TORA" [function="leaf" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
+ "RR3-05-QOCP-TORB" [function="leaf" playbook="provision.yml"config="./helper_scripts/extra_switch_config.sh"]
+ "MDC1-19-OCP-SPINEA" [function="spine" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
+ "MDC1-19-OCP-SPINEB" [function="spine" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
+ "MDC1-22-OCP-ACCESSA" [function="exit" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
+ "MDC1-22-OCP-ACCESSB" [function="exit" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
+    "MDC1-22-OCP-ACCESSA":"swp1" -- "MDC1-22-OCP-ACCESSB":"swp1";
+    "MDC1-22-OCP-ACCESSA":"swp49" -- "MDC1-19-OCP-SPINEA":"swp31";
+    "MDC1-22-OCP-ACCESSA":"swp50" -- "MDC1-19-OCP-SPINEB":"swp31";
+    "MDC1-22-OCP-ACCESSB":"swp49" -- "MDC1-19-OCP-SPINEA":"swp32";
+    "MDC1-22-OCP-ACCESSB":"swp50" -- "MDC1-19-OCP-SPINEB":"swp32";
+    "MDC1-19-OCP-SPINEA":"swp1" -- "MDC1-19-OCP-SPINEB":"swp1";
+    "MDC1-19-OCP-SPINEA":"swp27" -- "RR3-05-QOCP-TORA":"swp49";
+    "MDC1-19-OCP-SPINEA":"swp28" -- "RR3-05-QOCP-TORB":"swp49";
+    "MDC1-19-OCP-SPINEA":"swp29" -- "MDC1-19-DOCP-TORA":"swp49";
+    "MDC1-19-OCP-SPINEA":"swp30" -- "MDC1-19-DOCP-TORB":"swp49";
+    "MDC1-19-OCP-SPINEB":"swp27" -- "RR3-05-QOCP-TORA":"swp50";
+    "MDC1-19-OCP-SPINEB":"swp28" -- "RR3-05-QOCP-TORB":"swp50";
+    "MDC1-19-OCP-SPINEB":"swp29" -- "MDC1-19-DOCP-TORA":"swp50";
+    "MDC1-19-OCP-SPINEB":"swp30" -- "MDC1-19-DOCP-TORB":"swp50";
+    "MDC1-19-DOCP-TORA":"swp47" -- "MDC1-19-DOCP-TORB":"swp47";
+    "RR3-05-QOCP-TORA":"swp51" -- "RR3-05-QOCP-TORB":"swp51";
+    "RR3-05-QOCP-TORA":"swp52" -- "RR3-05-QOCP-TORB":"swp52"
+}
