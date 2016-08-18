@@ -1,0 +1,524 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# I've removed swp10-30 on the 54 port switches because of problems with vagrant scale to only 36 network devices
+
+groups = {
+  "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+  "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+  "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+  "servers" => ["server1", "server2"],
+  "network:children" => ["access", "spines", "leafs"],
+  "a-leafs" => ["MDC1-19-DOCP-TORA", "RR3-05-QOCP-TORA"],
+  "b-leafs" => ["MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORB"],
+  "a-spines" => ["MDC1-19-OCP-SPINEA"],
+  "b-spines" => ["MDC1-19-OCP-SPINEB"],
+  "a-access" => ["MDC1-22-OCP-ACCESSA"],
+  "b-access" => ["MDC1-22-OCP-ACCESSB"]
+}
+
+Vagrant.configure("2") do |config|
+   config.vm.provider "virtualbox" do |v|
+       v.gui=false
+   end
+
+  cumulus_image = "CumulusCommunity/cumulus-vx"
+  server_image = "ubuntu/trusty64"
+  link_seed = Random.rand(999.999).to_s
+
+  config.vm.define "MDC1-22-OCP-ACCESSA" do |vx| 
+    vx.vm.box = cumulus_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-MDC122OCPACCESSB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp3-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp4-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp5-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp6-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp7-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp8-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp9-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp31-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp32-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp33-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp34-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp35-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp36-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp37-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp38-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp39-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp40-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp41-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp42-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp43-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp44-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp45-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp46-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp47-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp48-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-MDC119OCPSPINEA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-MDC119OCPSPINEB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp51-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp52-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp53-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-swp54-' + link_seed, auto_config: false
+    vx.vm.host_name = "MDC1-22-OCP-ACCESSA"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      #ansible.verbose = "vvv"
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc5", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc6", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc7", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc35", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc36", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc37", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc38", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc39", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc40", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc41", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc42", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc43", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc44", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc45", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc46", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc47", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc48", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc49", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc50", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc51", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc52", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc53", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc54", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc55", "allow-vms"]
+    end
+  end
+
+  config.vm.define "MDC1-22-OCP-ACCESSB" do |vx|
+    vx.vm.box = cumulus_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-MDC122OCPACCESSB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp3-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp4-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp5-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp6-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp7-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp8-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp9-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp31-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp32-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp33-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp34-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp35-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp36-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp37-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp38-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp39-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp40-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp41-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp42-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp43-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp44-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp45-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp46-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp47-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp48-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-MDC119OCPSPINEA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-MDC119OCPSPINEB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp51-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp52-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp53-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-swp54-' + link_seed, auto_config: false
+    vx.vm.host_name = "MDC1-22-OCP-ACCESSB"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      #ansible.verbose = "vvv"
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc5", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc6", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc7", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc34", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc35", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc36", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc37", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc38", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc39", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc40", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc41", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc42", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc43", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc44", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc45", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc46", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc47", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc48", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc49", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc50", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc51", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc52", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc53", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc54", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc55", "allow-vms"]
+    end
+  end
+
+  config.vm.define "MDC1-19-DOCP-TORA" do |vx| 
+    vx.vm.box = cumulus_image
+    vx.vm.network "private_network",  virtualbox__intnet: "swp37", auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: "swp47", auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: "swp48", auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: "swp49", auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: "swp50", auto_config: false
+    vx.vm.host_name = "MDC1-19-DOCP-TORA"
+
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      #ansible.verbose = "vvv"
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc37", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc47", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc48", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc49", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc50", "allow-vms"]
+    end
+  end
+  
+  config.vm.define "MDC1-19-DOCP-TORB" do |vx|
+    vx.vm.box = cumulus_image 
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119DOCPTORB-server1-' + link_seed, "swp37" 
+    vx.vm.network "private_network",  virtualbox__intnet: "swp47", auto_config: false 
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-MDC119DOCPTORB-' + link_seed, "swp49" 
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-MDC119DOCPTORB-' + link_seed, "swp50" 
+    vx.vm.host_name = "MDC1-19-DOCP-TORB"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc37", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc47", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc49", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc50", "allow-vms"]
+    end
+  end
+
+  config.vm.define "RR3-05-QOCP-TORA" do |vx| 
+    vx.vm.box = cumulus_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp1-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp3-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp4-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp5-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp6-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp37-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-server2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp39-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp40-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp41-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp42-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp48-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-RR305QOCPTORA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-RR305QOCPTORA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-RR305QOCPTORB1-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-RR305QOCPTORB2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp53-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-swp54-' + link_seed, auto_config: false
+    vx.vm.host_name = "RR3-05-QOCP-TORA"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc5", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc6", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc7", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc38", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc39", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc40", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc41", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc42", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc43", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc49", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc50", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc51", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc52", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc53", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc54", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc55", "allow-vms"]
+    end
+  end
+
+  config.vm.define "RR3-05-QOCP-TORB" do |vx| 
+    vx.vm.box = cumulus_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp1-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp3-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp4-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp5-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp6-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp37-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-server2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp39-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp40-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp41-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp42-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-swp48-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-RR305QOCPTORB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-RR305QOCPTORB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-RR305QOCPTORB1-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-RR305QOCPTORB2-' + link_seed, auto_config: false
+    vx.vm.host_name = "RR3-05-QOCP-TORB"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc5", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc6", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc7", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc38", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc39", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc40", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc41", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc42", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc43", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc49", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc50", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc51", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc52", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc53", "allow-vms"]
+
+    end
+  end
+
+  config.vm.define "MDC1-19-OCP-SPINEA" do |vx| 
+    vx.vm.box = cumulus_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-MDC119OCPSPINEB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp3-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp4-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp5-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp6-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp7-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp8-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp9-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp10-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp11-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp12-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp13-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp14-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp15-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp16-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp17-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp18-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp19-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp20-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp21-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp22-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp23-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp24-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp25-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-swp26-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-RR305QOCPTORA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-RR305QOCPTORB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-MDC119DOCPTORA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-MDC119DOCPTORB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-MDC122OCPACCESSA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-MDC122OCPACCESSB-' + link_seed, auto_config: false
+    vx.vm.host_name = "MDC1-19-OCP-SPINEA"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc5", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc6", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc7", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
+    end
+  end
+
+  config.vm.define "MDC1-19-OCP-SPINEB" do |vx| 
+    vx.vm.box = cumulus_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEA-MDC119OCPSPINEB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp3-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp4-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp5-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp6-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp7-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp8-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp9-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp10-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp11-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp12-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp13-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp14-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp15-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp16-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp17-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp18-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp19-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp20-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp21-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp22-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp23-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp24-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp25-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-swp26-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-RR305QOCPTORA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-RR305QOCPTORB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-MDC119DOCPTORA-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119OCPSPINEB-MDC119DOCPTORB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSA-MDC119OCPSPINEB-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC122OCPACCESSB-MDC119OCPSPINEB-' + link_seed, auto_config: false
+    vx.vm.host_name = "MDC1-19-OCP-SPINEB"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc5", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc6", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc7", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc8", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc9", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc10", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc11", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc12", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc13", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc14", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc15", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc16", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc17", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc18", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc19", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc21", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc22", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc23", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc24", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc25", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc26", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc27", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc28", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc29", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc20", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc31", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc32", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc33", "allow-vms"]
+    end
+
+  end
+
+  config.vm.define "server1" do |vx| 
+    vx.vm.box = server_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119DOCPTORA-server1-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'MDC119DOCPTORB-server1-' + link_seed, auto_config: false
+    vx.vm.host_name = "server1"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      #ansible.verbose = "vvvv"
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+    end
+  end
+  
+  config.vm.define "server2" do |vx| 
+    vx.vm.box = server_image
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORA-server2-' + link_seed, auto_config: false
+    vx.vm.network "private_network",  virtualbox__intnet: 'RR305QOCPTORB-server2-' + link_seed, auto_config: false
+    vx.vm.host_name = "server2"
+    
+    vx.vm.provision "ansible" do |ansible|
+      ansible.groups = groups
+      ansible.playbook = "provision.yml"
+    end
+
+    vx.vm.provider "virtualbox" do |v|
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc3", "allow-vms"]
+    end
+  end
+
+
+end

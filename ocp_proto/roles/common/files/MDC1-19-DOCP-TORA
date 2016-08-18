@@ -29,7 +29,7 @@ auto bridge
 iface bridge
         bridge-vlan-aware yes
         bridge-vids 203 204 205 206
-        bridge-ports swp1 swp2 swp3 swp4 swp5 swp6 swp7 swp8 swp9 swp31 swp32 swp33 swp34 swp35 swp36 swp37 swp38 swp39 swp40 swp41 swp42 swp43 swp44 swp49 swp50
+        bridge-ports swp37 swp47 swp48 swp49 swp50
         bridge-stp on
         bridge-pvid 202
  
@@ -57,107 +57,10 @@ iface bridge.206
 # Interfaces
 #-------------
  
-auto swp1
-iface swp1
- 
-auto swp2
-iface swp2
- 
-auto swp3
-iface swp3
- 
-auto swp4
-iface swp4
- 
-# DOCP-9 enp129s0f0
-auto swp5
-iface swp5
-        bridge-pvid 202
- 
-auto swp6
-iface swp6
- 
-# DOCP-12 enp129s0f0
-auto swp7
-iface swp7
-        bridge-pvid 202
- 
-auto swp8
-iface swp8
- 
-# DOCP-6 enp129s0f0
-auto swp9
-iface swp9
-        bridge-pvid 202
- 
-auto swp31
-iface swp31
- 
-# DOCP-19 enp129s0f0
-auto swp32
-iface swp32
-        bridge-pvid 202
- 
-auto swp33
-iface swp33
- 
-# DOCP-18 enp129s0f0
-auto swp34
-iface swp34
-        bridge-pvid 202
- 
-auto swp35
-iface swp35
- 
-# DOCP-17 enp129s0f0
-auto swp36
-iface swp36
-        bridge-pvid 202
- 
 auto swp37
 iface swp37
         bridge-pvid 202
  
-# DOCP-16 enp129s0f0
-auto swp38
-iface swp38
-        bridge-pvid 202
- 
-auto swp39
-iface swp39
- 
-# DOCP-15 enp129s0f0
-auto swp40
-iface swp40
-        bridge-pvid 202
- 
-auto swp41
-iface swp41
- 
-# DOCP-14 enp129s0f0
-auto swp42
-iface swp42
-        bridge-pvid 202
- 
-auto swp43
-iface swp43
- 
-# DOCP-13 enp129s0f0
-auto swp44
-iface swp44
-        bridge-pvid 202
- 
-#swp45 cabled to MDC1-22-OCP-ACCESSA swp45 10.202.40.212/30
-#auto swp45
-#iface swp45 inet static
-#       address 10.202.40.214
-#        netmask 255.255.255.252
- 
-# swp46 cabled to MDC1-22-OCP-ACCESSB swp45 10.202.40.216/30
-#auto swp46
-#iface swp46 inet static
-#       address 10.202.40.218
-#        netmask 255.255.255.252
  
 # swp47 cabled to MDC1-19-DOCP-TORB swp47
 auto swp47
