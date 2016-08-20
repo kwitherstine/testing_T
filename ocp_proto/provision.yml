@@ -1,6 +1,15 @@
 ---
+- hosts: all
+  become: yes
+  user: cumulus
+  roles:
+    - common
+  handlers:
+    - include: handlers/main.yml
+
 - hosts: access
   become: yes
+  user: cumulus
   roles:
     - common
   handlers:
@@ -8,6 +17,7 @@
 
 - hosts: spines
   become: yes
+  user: cumulus
   roles:
     - common
   handlers:
@@ -15,6 +25,7 @@
 
 - hosts: leafs
   become: yes
+  user: cumulus
   roles:
     - common
   handlers:
@@ -22,6 +33,7 @@
 
 - hosts: servers
   become: yes
+  user: cumulus
   roles:
     - servers
   handlers:

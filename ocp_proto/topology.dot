@@ -2,16 +2,16 @@
 # use the following command to convert to Vagrantfile with Ansible config
 # 'python ./topology_converter.py ./topology.dot -a'
 graph G {
- "MDC1-19-DOCP-TORA" [function="leaf" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
- "MDC1-19-DOCP-TORB" [function="leaf" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
- "RR3-05-QOCP-TORA" [function="leaf" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
- "RR3-05-QOCP-TORB" [function="leaf" playbook="provision.yml"config="./helper_scripts/extra_switch_config.sh"]
- "MDC1-19-OCP-SPINEA" [function="spine" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
- "MDC1-19-OCP-SPINEB" [function="spine" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
- "MDC1-22-OCP-ACCESSA" [function="exit" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
- "MDC1-22-OCP-ACCESSB" [function="exit" playbook="provision.yml" config="./helper_scripts/extra_switch_config.sh"]
- "host1" [function="host" playbook="provision.yml" os="boxcutter/ubuntu1404" ubuntu=True config="./helper_scripts/extra_server_config.sh"]
- "host2" [function="host" playbook="provision.yml" os="boxcutter/ubuntu1404" ubuntu=True config="./helper_scripts/extra_server_config.sh"] 
+ "MDC1-19-DOCP-TORA" [function="leaf" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "MDC1-19-DOCP-TORB" [function="leaf" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "RR3-05-QOCP-TORA" [function="leaf" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "RR3-05-QOCP-TORB" [function="leaf" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "MDC1-19-OCP-SPINEA" [function="spine" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "MDC1-19-OCP-SPINEB" [function="spine" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "MDC1-22-OCP-ACCESSA" [function="exit" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "MDC1-22-OCP-ACCESSB" [function="exit" config="./helper_scripts/extra_switch_config.sh" playbook="provision.yml"]
+ "host1" [function="host" os="boxcutter/ubuntu1404" ubuntu=True config="./helper_scripts/extra_server_config.sh" playbook="provision.yml"]
+ "host2" [function="host" os="boxcutter/ubuntu1404" ubuntu=True config="./helper_scripts/extra_server_config.sh" playbook="provision.yml"] 
     "MDC1-22-OCP-ACCESSA":"swp1" -- "MDC1-22-OCP-ACCESSB":"swp1";
     "MDC1-22-OCP-ACCESSA":"swp49" -- "MDC1-19-OCP-SPINEA":"swp31";
     "MDC1-22-OCP-ACCESSA":"swp50" -- "MDC1-19-OCP-SPINEB":"swp31";

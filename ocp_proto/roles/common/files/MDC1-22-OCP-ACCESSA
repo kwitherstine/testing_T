@@ -9,6 +9,10 @@
 # The loopback network interface
 auto lo
 iface lo inet loopback
+
+# adding for vagrant only, if not all VM communication is cut off on networking reload
+auto vagrant
+iface vagrant inet dhcp
  
 # The primary network interface
 # for vagrant only, commenting out eth0 or it crashes

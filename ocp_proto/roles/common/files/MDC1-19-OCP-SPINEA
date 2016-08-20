@@ -10,11 +10,15 @@
 # The loopback network interface
 auto lo
 iface lo inet loopback
+
+# adding for vagrant only, if not all VM communication is cut off on networking reload
+auto vagrant
+iface vagrant inet dhcp
  
 # The primary network interface
 # for vagrant only, commenting out eth0 or it crashes
-auto eth0
-iface eth0 inet dhcp
+#auto eth0
+#iface eth0 inet dhcp
 #iface eth0 inet static
 #        address 10.5.16.18
 #        netmask 255.255.255.0

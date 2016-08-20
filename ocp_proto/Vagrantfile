@@ -1,6 +1,6 @@
 # Created by Topology-Converter v4.3.1
 #    https://github.com/cumulusnetworks/topology_converter
-#    using topology data from: topology_sim.dot
+#    using topology data from: ./topology.dot
 #
 #    NOTE: in order to use this Vagrantfile you will need:
 #       -Vagrant(v1.8.1+) installed: http://www.vagrantup.com/downloads
@@ -283,11 +283,24 @@ fi
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  wbid = 1471537708
+  wbid = 1471699940
 
   config.vm.provider "virtualbox" do |v|
     v.gui=false
 
+  end
+
+  #Generating Ansible Host File at following location:
+  #    ./.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "./helper_scripts/empty_playbook.yml"
+    ansible.groups = {
+      "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+      "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+      "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+      "servers" => ["host1", "host2"],
+      "network:children" => ["leafs", "spines", "access"]
+    }
   end
 
 
@@ -296,7 +309,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-22-OCP-ACCESSB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_MDC1-22-OCP-ACCESSB"
+      v.name = "1471699940_MDC1-22-OCP-ACCESSB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -307,72 +320,9 @@ Vagrant.configure("2") do |config|
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net2", auto_config: false , :mac => "443839000004"
       
       # link for swp49 --> MDC1-19-OCP-SPINEA:swp32
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net13", auto_config: false , :mac => "443839000019"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net16", auto_config: false , :mac => "44383900001f"
       
       # link for swp50 --> MDC1-19-OCP-SPINEB:swp32
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net7", auto_config: false , :mac => "44383900000d"
-      
-
-    device.vm.provider "virtualbox" do |vbox|
-      vbox.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
-      vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
-      vbox.customize ['modifyvm', :id, '--nicpromisc4', 'allow-all']
-      vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
-    end
-
-    # Fixes "stdin: is not a tty" and "mesg: ttyname failed : Inappropriate ioctl for device"  messages --> https://github.com/mitchellh/vagrant/issues/1673
-    device.vm.provision :shell , inline: "(grep -q 'mesg n' /root/.profile 2>/dev/null && sed -i '/mesg n/d' /root/.profile && echo 'Ignore the previous error, fixing this now...') || true;"
-
-
-
-    # Run the Config specified in the Node Attributes
-    device.vm.provision :shell , path: "./helper_scripts/extra_switch_config.sh"
-
-
-    # Install Rules for the interface re-map
-      device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
-      device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
-
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:04 swp1"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:19 swp49"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0d swp50"
-
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
-
-
-    # Ansible Playbook Configuration
-    device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
-    end
-
-    
-    # Run Any Platform Specific Code and Apply the interface Re-map 
-    #   (may or may not perform a reboot depending on platform)
-    device.vm.provision :shell , :inline => $script
-
-
-  end
-
-  ##### DEFINE VM for MDC1-22-OCP-ACCESSA #####
-  config.vm.define "MDC1-22-OCP-ACCESSA" do |device|
-    device.vm.hostname = "MDC1-22-OCP-ACCESSA" 
-    device.vm.box = "CumulusCommunity/cumulus-vx"
-    device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_MDC1-22-OCP-ACCESSA"
-      v.memory = 512
-    end
-    #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
-    device.vm.synced_folder ".", "/vagrant", disabled: true
-
-    # NETWORK INTERFACES
-      # link for swp1 --> MDC1-22-OCP-ACCESSB:swp1
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net2", auto_config: false , :mac => "443839000003"
-      
-      # link for swp49 --> MDC1-19-OCP-SPINEA:swp31
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net8", auto_config: false , :mac => "44383900000f"
-      
-      # link for swp50 --> MDC1-19-OCP-SPINEB:swp31
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net9", auto_config: false , :mac => "443839000011"
       
 
@@ -396,8 +346,8 @@ Vagrant.configure("2") do |config|
       device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
       device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
 
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:03 swp1"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0f swp49"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:04 swp1"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1f swp49"
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:11 swp50"
 
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
@@ -406,7 +356,84 @@ Vagrant.configure("2") do |config|
 
     # Ansible Playbook Configuration
     device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
+    end
+
+    
+    # Run Any Platform Specific Code and Apply the interface Re-map 
+    #   (may or may not perform a reboot depending on platform)
+    device.vm.provision :shell , :inline => $script
+
+
+  end
+
+  ##### DEFINE VM for MDC1-22-OCP-ACCESSA #####
+  config.vm.define "MDC1-22-OCP-ACCESSA" do |device|
+    device.vm.hostname = "MDC1-22-OCP-ACCESSA" 
+    device.vm.box = "CumulusCommunity/cumulus-vx"
+    device.vm.provider "virtualbox" do |v|
+      v.name = "1471699940_MDC1-22-OCP-ACCESSA"
+      v.memory = 512
+    end
+    #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
+    device.vm.synced_folder ".", "/vagrant", disabled: true
+
+    # NETWORK INTERFACES
+      # link for swp1 --> MDC1-22-OCP-ACCESSB:swp1
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net2", auto_config: false , :mac => "443839000003"
+      
+      # link for swp49 --> MDC1-19-OCP-SPINEA:swp31
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net10", auto_config: false , :mac => "443839000013"
+      
+      # link for swp50 --> MDC1-19-OCP-SPINEB:swp31
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net11", auto_config: false , :mac => "443839000015"
+      
+
+    device.vm.provider "virtualbox" do |vbox|
+      vbox.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc4', 'allow-all']
+      vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
+    end
+
+    # Fixes "stdin: is not a tty" and "mesg: ttyname failed : Inappropriate ioctl for device"  messages --> https://github.com/mitchellh/vagrant/issues/1673
+    device.vm.provision :shell , inline: "(grep -q 'mesg n' /root/.profile 2>/dev/null && sed -i '/mesg n/d' /root/.profile && echo 'Ignore the previous error, fixing this now...') || true;"
+
+
+
+    # Run the Config specified in the Node Attributes
+    device.vm.provision :shell , path: "./helper_scripts/extra_switch_config.sh"
+
+
+    # Install Rules for the interface re-map
+      device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
+      device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
+
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:03 swp1"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:13 swp49"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:15 swp50"
+
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
+
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
     end
 
     
@@ -422,7 +449,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-OCP-SPINEA" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_MDC1-19-OCP-SPINEA"
+      v.name = "1471699940_MDC1-19-OCP-SPINEA"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -430,25 +457,25 @@ Vagrant.configure("2") do |config|
 
     # NETWORK INTERFACES
       # link for swp1 --> MDC1-19-OCP-SPINEB:swp1
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net10", auto_config: false , :mac => "443839000013"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net13", auto_config: false , :mac => "443839000019"
       
       # link for swp27 --> RR3-05-QOCP-TORA:swp49
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net12", auto_config: false , :mac => "443839000017"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net15", auto_config: false , :mac => "44383900001d"
       
       # link for swp28 --> RR3-05-QOCP-TORB:swp49
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net5", auto_config: false , :mac => "443839000009"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net6", auto_config: false , :mac => "44383900000b"
       
       # link for swp29 --> MDC1-19-DOCP-TORA:swp49
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net4", auto_config: false , :mac => "443839000007"
       
       # link for swp30 --> MDC1-19-DOCP-TORB:swp49
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net14", auto_config: false , :mac => "44383900001b"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net18", auto_config: false , :mac => "443839000023"
       
       # link for swp31 --> MDC1-22-OCP-ACCESSA:swp49
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net8", auto_config: false , :mac => "443839000010"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net10", auto_config: false , :mac => "443839000014"
       
       # link for swp32 --> MDC1-22-OCP-ACCESSB:swp49
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net13", auto_config: false , :mac => "44383900001a"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net16", auto_config: false , :mac => "443839000020"
       
 
     device.vm.provider "virtualbox" do |vbox|
@@ -475,13 +502,13 @@ Vagrant.configure("2") do |config|
       device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
       device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
 
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:13 swp1"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:17 swp27"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:09 swp28"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:19 swp1"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1d swp27"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0b swp28"
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:07 swp29"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1b swp30"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:10 swp31"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1a swp32"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:23 swp30"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:14 swp31"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:20 swp32"
 
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
@@ -489,7 +516,14 @@ Vagrant.configure("2") do |config|
 
     # Ansible Playbook Configuration
     device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
     end
 
     
@@ -505,7 +539,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-OCP-SPINEB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_MDC1-19-OCP-SPINEB"
+      v.name = "1471699940_MDC1-19-OCP-SPINEB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -513,25 +547,25 @@ Vagrant.configure("2") do |config|
 
     # NETWORK INTERFACES
       # link for swp1 --> MDC1-19-OCP-SPINEA:swp1
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net10", auto_config: false , :mac => "443839000014"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net13", auto_config: false , :mac => "44383900001a"
       
       # link for swp27 --> RR3-05-QOCP-TORA:swp50
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net15", auto_config: false , :mac => "44383900001d"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net19", auto_config: false , :mac => "443839000025"
       
       # link for swp28 --> RR3-05-QOCP-TORB:swp50
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net1", auto_config: false , :mac => "443839000001"
       
       # link for swp29 --> MDC1-19-DOCP-TORA:swp50
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net17", auto_config: false , :mac => "443839000021"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net21", auto_config: false , :mac => "443839000029"
       
       # link for swp30 --> MDC1-19-DOCP-TORB:swp50
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net6", auto_config: false , :mac => "44383900000b"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net7", auto_config: false , :mac => "44383900000d"
       
       # link for swp31 --> MDC1-22-OCP-ACCESSA:swp50
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net9", auto_config: false , :mac => "443839000012"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net11", auto_config: false , :mac => "443839000016"
       
       # link for swp32 --> MDC1-22-OCP-ACCESSB:swp50
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net7", auto_config: false , :mac => "44383900000e"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net9", auto_config: false , :mac => "443839000012"
       
 
     device.vm.provider "virtualbox" do |vbox|
@@ -558,13 +592,13 @@ Vagrant.configure("2") do |config|
       device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
       device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
 
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:14 swp1"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1d swp27"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1a swp1"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:25 swp27"
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:01 swp28"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:21 swp29"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0b swp30"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:12 swp31"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0e swp32"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:29 swp29"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0d swp30"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:16 swp31"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:12 swp32"
 
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
@@ -572,7 +606,14 @@ Vagrant.configure("2") do |config|
 
     # Ansible Playbook Configuration
     device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
     end
 
     
@@ -588,27 +629,31 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-DOCP-TORB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_MDC1-19-DOCP-TORB"
+      v.name = "1471699940_MDC1-19-DOCP-TORB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
     device.vm.synced_folder ".", "/vagrant", disabled: true
 
     # NETWORK INTERFACES
-      # link for swp47 --> MDC1-19-DOCP-TORA:swp47
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net11", auto_config: false , :mac => "443839000016"
+      # link for swp37 --> host1:eth2
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net12", auto_config: false , :mac => "443839000018"
       
-      # link for swp49 --> MDC1-19-OCP-SPINEA:swp30
+      # link for swp47 --> MDC1-19-DOCP-TORA:swp47
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net14", auto_config: false , :mac => "44383900001c"
       
+      # link for swp49 --> MDC1-19-OCP-SPINEA:swp30
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net18", auto_config: false , :mac => "443839000024"
+      
       # link for swp50 --> MDC1-19-OCP-SPINEB:swp30
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net6", auto_config: false , :mac => "44383900000c"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net7", auto_config: false , :mac => "44383900000e"
       
 
     device.vm.provider "virtualbox" do |vbox|
       vbox.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc4', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc5', 'allow-all']
       vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
 
@@ -625,9 +670,10 @@ Vagrant.configure("2") do |config|
       device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
       device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
 
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:16 swp47"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1c swp49"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0c swp50"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:18 swp37"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1c swp47"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:24 swp49"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0e swp50"
 
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
@@ -635,7 +681,14 @@ Vagrant.configure("2") do |config|
 
     # Ansible Playbook Configuration
     device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
     end
 
     
@@ -651,27 +704,31 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-DOCP-TORA" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_MDC1-19-DOCP-TORA"
+      v.name = "1471699940_MDC1-19-DOCP-TORA"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
     device.vm.synced_folder ".", "/vagrant", disabled: true
 
     # NETWORK INTERFACES
+      # link for swp37 --> host1:eth1
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net17", auto_config: false , :mac => "443839000022"
+      
       # link for swp47 --> MDC1-19-DOCP-TORB:swp47
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net11", auto_config: false , :mac => "443839000015"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net14", auto_config: false , :mac => "44383900001b"
       
       # link for swp49 --> MDC1-19-OCP-SPINEA:swp29
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net4", auto_config: false , :mac => "443839000008"
       
       # link for swp50 --> MDC1-19-OCP-SPINEB:swp29
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net17", auto_config: false , :mac => "443839000022"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net21", auto_config: false , :mac => "44383900002a"
       
 
     device.vm.provider "virtualbox" do |vbox|
       vbox.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc4', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc5', 'allow-all']
       vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
 
@@ -688,9 +745,10 @@ Vagrant.configure("2") do |config|
       device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
       device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
 
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:15 swp47"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:22 swp37"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1b swp47"
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:08 swp49"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:22 swp50"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:2a swp50"
 
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
@@ -698,7 +756,14 @@ Vagrant.configure("2") do |config|
 
     # Ansible Playbook Configuration
     device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
     end
 
     
@@ -714,24 +779,27 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "RR3-05-QOCP-TORA" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_RR3-05-QOCP-TORA"
+      v.name = "1471699940_RR3-05-QOCP-TORA"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
     device.vm.synced_folder ".", "/vagrant", disabled: true
 
     # NETWORK INTERFACES
+      # link for swp38 --> host2:eth1
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net5", auto_config: false , :mac => "44383900000a"
+      
       # link for swp49 --> MDC1-19-OCP-SPINEA:swp27
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net12", auto_config: false , :mac => "443839000018"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net15", auto_config: false , :mac => "44383900001e"
       
       # link for swp50 --> MDC1-19-OCP-SPINEB:swp27
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net15", auto_config: false , :mac => "44383900001e"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net19", auto_config: false , :mac => "443839000026"
       
       # link for swp51 --> RR3-05-QOCP-TORB:swp51
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net3", auto_config: false , :mac => "443839000005"
       
       # link for swp52 --> RR3-05-QOCP-TORB:swp52
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net16", auto_config: false , :mac => "44383900001f"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net20", auto_config: false , :mac => "443839000027"
       
 
     device.vm.provider "virtualbox" do |vbox|
@@ -739,6 +807,7 @@ Vagrant.configure("2") do |config|
       vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc4', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc5', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc6', 'allow-all']
       vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
 
@@ -755,10 +824,11 @@ Vagrant.configure("2") do |config|
       device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
       device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
 
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:18 swp49"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1e swp50"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0a swp38"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1e swp49"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:26 swp50"
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:05 swp51"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:1f swp52"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:27 swp52"
 
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
@@ -766,7 +836,14 @@ Vagrant.configure("2") do |config|
 
     # Ansible Playbook Configuration
     device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
     end
 
     
@@ -782,15 +859,18 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "RR3-05-QOCP-TORB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471537708_RR3-05-QOCP-TORB"
+      v.name = "1471699940_RR3-05-QOCP-TORB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
     device.vm.synced_folder ".", "/vagrant", disabled: true
 
     # NETWORK INTERFACES
+      # link for swp38 --> host2:eth2
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net8", auto_config: false , :mac => "443839000010"
+      
       # link for swp49 --> MDC1-19-OCP-SPINEA:swp28
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net5", auto_config: false , :mac => "44383900000a"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net6", auto_config: false , :mac => "44383900000c"
       
       # link for swp50 --> MDC1-19-OCP-SPINEB:swp28
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net1", auto_config: false , :mac => "443839000002"
@@ -799,7 +879,7 @@ Vagrant.configure("2") do |config|
       device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net3", auto_config: false , :mac => "443839000006"
       
       # link for swp52 --> RR3-05-QOCP-TORA:swp52
-      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net16", auto_config: false , :mac => "443839000020"
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net20", auto_config: false , :mac => "443839000028"
       
 
     device.vm.provider "virtualbox" do |vbox|
@@ -807,6 +887,7 @@ Vagrant.configure("2") do |config|
       vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc4', 'allow-all']
       vbox.customize ['modifyvm', :id, '--nicpromisc5', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc6', 'allow-all']
       vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
     end
 
@@ -823,10 +904,11 @@ Vagrant.configure("2") do |config|
       device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
       device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
 
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0a swp49"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:10 swp38"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0c swp49"
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:02 swp50"
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:06 swp51"
-      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:20 swp52"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:28 swp52"
 
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
       device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
@@ -834,7 +916,148 @@ Vagrant.configure("2") do |config|
 
     # Ansible Playbook Configuration
     device.vm.provision "ansible" do |ansible|
-          ansible.playbook = "provision.yml"
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
+    end
+
+    
+    # Run Any Platform Specific Code and Apply the interface Re-map 
+    #   (may or may not perform a reboot depending on platform)
+    device.vm.provision :shell , :inline => $script
+
+
+  end
+
+  ##### DEFINE VM for host2 #####
+  config.vm.define "host2" do |device|
+    device.vm.hostname = "host2" 
+    device.vm.box = "boxcutter/ubuntu1404"
+    device.vm.provider "virtualbox" do |v|
+      v.name = "1471699940_host2"
+      v.memory = 512
+    end
+    #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
+    device.vm.synced_folder ".", "/vagrant", disabled: true
+      # Shorten Boot Process - Applies to Ubuntu Only - remove \"Wait for Network\"
+      device.vm.provision :shell , inline: "sed -i 's/sleep [0-9]*/sleep 1/' /etc/init/failsafe.conf || true"
+
+    # NETWORK INTERFACES
+      # link for eth1 --> RR3-05-QOCP-TORA:swp38
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net5", auto_config: false , :mac => "443839000009"
+      
+      # link for eth2 --> RR3-05-QOCP-TORB:swp38
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net8", auto_config: false , :mac => "44383900000f"
+      
+
+    device.vm.provider "virtualbox" do |vbox|
+      vbox.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
+      vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
+    end
+
+    # Fixes "stdin: is not a tty" and "mesg: ttyname failed : Inappropriate ioctl for device"  messages --> https://github.com/mitchellh/vagrant/issues/1673
+    device.vm.provision :shell , inline: "(grep -q 'mesg n' /root/.profile 2>/dev/null && sed -i '/mesg n/d' /root/.profile && echo 'Ignore the previous error, fixing this now...') || true;"
+
+
+
+    # Run the Config specified in the Node Attributes
+    device.vm.provision :shell , path: "./helper_scripts/extra_server_config.sh"
+
+
+    # Install Rules for the interface re-map
+      device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
+      device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
+
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:09 eth1"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:0f eth2"
+
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
+
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
+    end
+
+    
+    # Run Any Platform Specific Code and Apply the interface Re-map 
+    #   (may or may not perform a reboot depending on platform)
+    device.vm.provision :shell , :inline => $script
+
+
+  end
+
+  ##### DEFINE VM for host1 #####
+  config.vm.define "host1" do |device|
+    device.vm.hostname = "host1" 
+    device.vm.box = "boxcutter/ubuntu1404"
+    device.vm.provider "virtualbox" do |v|
+      v.name = "1471699940_host1"
+      v.memory = 512
+    end
+    #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
+    device.vm.synced_folder ".", "/vagrant", disabled: true
+      # Shorten Boot Process - Applies to Ubuntu Only - remove \"Wait for Network\"
+      device.vm.provision :shell , inline: "sed -i 's/sleep [0-9]*/sleep 1/' /etc/init/failsafe.conf || true"
+
+    # NETWORK INTERFACES
+      # link for eth1 --> MDC1-19-DOCP-TORA:swp37
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net17", auto_config: false , :mac => "443839000021"
+      
+      # link for eth2 --> MDC1-19-DOCP-TORB:swp37
+      device.vm.network "private_network", virtualbox__intnet: "#{wbid}_net12", auto_config: false , :mac => "443839000017"
+      
+
+    device.vm.provider "virtualbox" do |vbox|
+      vbox.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
+      vbox.customize ['modifyvm', :id, '--nicpromisc3', 'allow-all']
+      vbox.customize ["modifyvm", :id, "--nictype1", "virtio"]
+    end
+
+    # Fixes "stdin: is not a tty" and "mesg: ttyname failed : Inappropriate ioctl for device"  messages --> https://github.com/mitchellh/vagrant/issues/1673
+    device.vm.provision :shell , inline: "(grep -q 'mesg n' /root/.profile 2>/dev/null && sed -i '/mesg n/d' /root/.profile && echo 'Ignore the previous error, fixing this now...') || true;"
+
+
+
+    # Run the Config specified in the Node Attributes
+    device.vm.provision :shell , path: "./helper_scripts/extra_server_config.sh"
+
+
+    # Install Rules for the interface re-map
+      device.vm.provision "file", source: "./helper_scripts/apply_udev.py", destination: "/home/vagrant/apply_udev.py"
+      device.vm.provision :shell , inline: "chmod 755 /home/vagrant/apply_udev.py"
+
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:21 eth1"
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -a 44:38:39:00:00:17 eth2"
+
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -vm "
+      device.vm.provision :shell , inline: "/home/vagrant/apply_udev.py -s"
+
+
+    # Ansible Playbook Configuration
+    device.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provision.yml"
+      ansible.groups = {
+        "leafs" => ["MDC1-19-DOCP-TORA", "MDC1-19-DOCP-TORB", "RR3-05-QOCP-TORA", "RR3-05-QOCP-TORB"],
+        "access" => ["MDC1-22-OCP-ACCESSA", "MDC1-22-OCP-ACCESSB"],
+        "spines" => ["MDC1-19-OCP-SPINEA", "MDC1-19-OCP-SPINEB"],
+        "servers" => ["host1", "host2"],
+        "network:children" => ["leafs", "spines", "access"]
+      }
     end
 
     

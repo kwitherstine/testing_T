@@ -8,7 +8,7 @@
   notify: reload networking
 
 #Copy the topology file to the remote switches
-- name: copy ptmd topology.dot
+- name: Copy ptmd topology.dot
   copy: src=topology.dot dest=/etc/ptm.d/topology.dot
   tags:
     - ptm_setup
