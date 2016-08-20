@@ -3,7 +3,9 @@ This is a random collection of Ansible playbooks to use with Cumulus VX and the 
 
 Not all of the playbooks in this repo will be in 100% working order, so please use with care. 
 
-The ocp_proto directory contains a Vagrant + Ansible simulation of a 2 leaf, 4 spine 2 border leaf build. Navigate to the directory and simply type "sudo vagrant up" to kick off the simulation. This simulation assumes that Vagrant and Ansible are both in working order, and Cumulus VX + Ubuntu Trusty VM's are available in your Vagrant environment.
+The ocp_proto directory contains a Vagrant + Ansible simulation of a 4 leafs in 2 pods, 2 spines 2 border leaf/access boxes build. There are 2 Ubuntu servers connected to the leaf nodes with a MLAG Bond. 
+
+Navigate to the directory and simply type "sudo vagrant up" to kick off the simulation. This simulation assumes that Vagrant, Virtualbox and Ansible are all in working order, and Cumulus VX + Ubuntu Trusty VM's are available in your Vagrant environment.
 
 ### Ansible
 All configuration is driven through [Ansible](http://ansible.com). The intention is for no change to be made directly on the network and all changes to be done through modifications to the playbooks and/or variables (var) files.
