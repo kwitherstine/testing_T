@@ -283,7 +283,7 @@ fi
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  wbid = 1471699940
+  wbid = 20160820
 
   config.vm.provider "virtualbox" do |v|
     v.gui=false
@@ -309,7 +309,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-22-OCP-ACCESSB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_MDC1-22-OCP-ACCESSB"
+      v.name = "20160820_MDC1-22-OCP-ACCESSB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -379,7 +379,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-22-OCP-ACCESSA" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_MDC1-22-OCP-ACCESSA"
+      v.name = "20160820_MDC1-22-OCP-ACCESSA"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -449,7 +449,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-OCP-SPINEA" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_MDC1-19-OCP-SPINEA"
+      v.name = "20160820_MDC1-19-OCP-SPINEA"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -539,7 +539,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-OCP-SPINEB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_MDC1-19-OCP-SPINEB"
+      v.name = "20160820_MDC1-19-OCP-SPINEB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -629,7 +629,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-DOCP-TORB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_MDC1-19-DOCP-TORB"
+      v.name = "20160820_MDC1-19-DOCP-TORB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -704,7 +704,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "MDC1-19-DOCP-TORA" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_MDC1-19-DOCP-TORA"
+      v.name = "20160820_MDC1-19-DOCP-TORA"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -779,7 +779,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "RR3-05-QOCP-TORA" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_RR3-05-QOCP-TORA"
+      v.name = "20160820_RR3-05-QOCP-TORA"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -859,7 +859,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "RR3-05-QOCP-TORB" 
     device.vm.box = "CumulusCommunity/cumulus-vx"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_RR3-05-QOCP-TORB"
+      v.name = "20160820_RR3-05-QOCP-TORB"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -939,7 +939,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "host2" 
     device.vm.box = "boxcutter/ubuntu1404"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_host2"
+      v.name = "20160820_host2"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
@@ -1006,7 +1006,7 @@ Vagrant.configure("2") do |config|
     device.vm.hostname = "host1" 
     device.vm.box = "boxcutter/ubuntu1404"
     device.vm.provider "virtualbox" do |v|
-      v.name = "1471699940_host1"
+      v.name = "20160820_host1"
       v.memory = 512
     end
     #   see note here: https://github.com/pradels/vagrant-libvirt#synced-folders
