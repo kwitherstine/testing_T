@@ -7,6 +7,8 @@ The ocp_proto directory contains a Vagrant + Ansible simulation of a 4 leafs in 
 
 Navigate to the directory and simply type "sudo vagrant up" to kick off the simulation. This simulation assumes that Vagrant, Virtualbox and Ansible are all in working order, and Cumulus VX + Ubuntu Trusty VM's are available in your Vagrant environment.
 
+After the vagrant environment has had the chance to come online. Run "sudo ansible-playbook reboot-network.yml". When the VM's come back online, the topology is ready.
+
 ### Ansible
 All configuration is driven through [Ansible](http://ansible.com). The intention is for no change to be made directly on the network and all changes to be done through modifications to the playbooks and/or variables (var) files.
 
