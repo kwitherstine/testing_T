@@ -26,11 +26,14 @@
      - "bonding" 
      - "8021q"
 
-- name: push /etc/network/configuration for servers
-  template: src=host_interfaces.j2 dest=/etc/network/interfaces
+#- name: push /etc/network/configuration for servers
+#  template: src=host_interfaces.j2 dest=/etc/network/interfaces
+
+- name: Copy Interfaces file
+  copy: src={{ansible_hostname}} dest=/etc/network/interfaces
 
 - name: ifup all interfaces
   command: "/sbin/ifup -a"
 
-- name: reboot
-  command: "/sbin/reboot"
+#- name: reboot
+#  command: "/sbin/reboot"
