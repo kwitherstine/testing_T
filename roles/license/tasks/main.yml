@@ -1,0 +1,2 @@
+- name: install license using http url
+  cl_license: src='http://172.16.30.1/license.txt'

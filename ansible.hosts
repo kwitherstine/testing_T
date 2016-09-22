@@ -1,11 +1,16 @@
 [spines]
-MDC1-19-OCP-SPINE[A:B]
+spine01
+spine02
 
 [access]
-MDC1-22-OCP-ACCESS[A:B]
 
 [leafs]
-MDC1-19-DOCP-TOR[A:B]
+leaf01
+leaf02
+leaf03
+leaf04
+leaf05
+leaf06
 
 [network:children]
 spines

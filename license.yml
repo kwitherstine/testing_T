@@ -1,0 +1,5 @@
+---
+ - hosts: network 
+   become: yes
+   roles:
+     - license
