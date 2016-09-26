@@ -27,8 +27,8 @@
 - name: Setup NTP servers
   lineinfile: dest=/etc/ntp.conf state=present insertafter="#server ntp.your-provider.example" line="server {{ item }}"
   with_items:
-    - 192.168.100.253
-    - 192.168.100.254
+    - 173.255.215.209
+    - 206.253.165.93
   tags:
     - time_setup
     - initial_setup
@@ -42,7 +42,7 @@
 #Setup the switch time zone (Note this will always report changed if re-run after the dpkg-reconfigure)
 #For a list of time zones check: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 - name: Set time zone /etc/timezone
-  copy: content="America/New_York" dest=/etc/timezone
+  copy: content="America/Chicago" dest=/etc/timezone
   tags:
     - time_setup
     - initial_setup
@@ -66,8 +66,8 @@
 - name: Setup NTP servers
   lineinfile: dest=/etc/ntp.conf state=present insertafter="#server ntp.your-provider.example" line="server {{ item }}"
   with_items:
-    - 192.168.100.253
-    - 192.168.100.254
+    - 173.255.215.209
+    - 206.253.165.93
   tags:
     - time_setup
     - initial_setup
