@@ -11,7 +11,7 @@ from paramiko import SSHClient
 from multiprocessing import Process
 
 def go(host, demo):
-    url = "http://172.16.30.1/cumulus/bgp-unnumbered/"
+    url = "http://172.16.30.1/cumulus/bgp_unnumbered/bgp-unnumbered"
     expect = paramiko.SSHClient()
     expect.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     expect.connect(host, username="cumulus", password="CumulusLinux!")
