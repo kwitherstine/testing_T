@@ -1,4 +1,27 @@
-
 auto lo
 iface lo inet loopback
     address 10.0.0.13/32
+    
+    
+# The primary network interface
+auto eth0
+iface eth0 inet dhcp
+
+## Mako code when commented out, should be 
+## done using two comments, not one.
+## Otherwise incorrect processing may occur
+## <%def name="other_defaults()">
+##   mtu 3000
+## </%def>
+###
+<%def name="interface_defaults()">
+   link-duplex full
+   mtu 9216
+   
+</%def>
+
+% for i in range(1,55):
+auto swp${i}
+iface swp${i}
+${interface_defaults()}
+% endfor
