@@ -1,0 +1,4 @@
+
+auto lo
+iface lo inet loopback
+    address 10.0.0.14/32
