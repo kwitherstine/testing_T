@@ -1,0 +1,15 @@
+---
+# to run this playbook, use the following command:
+# "ansible-playbook show_lldp.yml --verbose"
+# 
+# This playbook assumes that NCLU has been installed and you are running CL 3.1 minimum
+#
+# to run commands individually, use the following example as a guideline:
+# ansible network -a "clagctl"
+- hosts: network
+  tasks:
+    - name: net show lldp
+      command: net show lldp
+ 
+    - name: show PTM status
+      command: ptmctl
