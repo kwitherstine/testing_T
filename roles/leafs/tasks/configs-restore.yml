@@ -10,21 +10,21 @@
 
 # Use the following lines to copy JUST the interfaces single file from the backup location
 # to the switchs
-#    - name: copy interfaces
-#      copy: src=../{{ansible_hostname}}/interfaces dest=/etc/network/
-#      notify: reload networking
+    - name: copy interfaces
+      copy: src=../{{ansible_hostname}}/interfaces dest=/etc/network/
+      notify: reload networking
 
 # Use the following lines (instead of the previous section) to coyp the interfaces.d directory
 # from the backup location to the switches. This includes the next 2 "name:" sections.
-    - name: List files in interfaces.d directory
-      local_action: command ls ../{{ansible_hostname}}/etc/network/interfaces.d/
-      register: interfaces_files
+#    - name: List files in interfaces.d directory
+#      local_action: command ls ../{{ansible_hostname}}/etc/network/interfaces.d/
+#      register: interfaces_files
 
-    - name: copy interfaces.d directory files
-      copy: src=../{{ansible_hostname}}/etc/network/interfaces.d/{{item}} dest=/etc/network/interfaces.d/
-      with_items: interfaces_files.stdout_lines
-      notify: reload networking
-      ignore_errors: yes
+#    - name: copy interfaces.d directory files
+#      copy: src=../{{ansible_hostname}}/etc/network/interfaces.d/{{item}} dest=/etc/network/interfaces.d/
+#      with_items: interfaces_files.stdout_lines
+#      notify: reload networking
+#      ignore_errors: yes
       
     - name: copy Quagga daemons
       copy: src=../{{ansible_hostname}}/daemons dest=/etc/quagga/

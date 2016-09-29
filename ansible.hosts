@@ -12,6 +12,22 @@ leaf04
 leaf05
 leaf06
 
+[a-leafs]
+leaf01
+leaf03
+leaf05
+
+[b-leafs]
+leaf02
+leaf04
+leaf06
+
+[a-spines]
+spine01
+
+[b-spines]
+spine02
+
 [network:children]
 spines
 access
