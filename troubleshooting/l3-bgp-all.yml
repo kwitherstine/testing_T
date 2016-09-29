@@ -1,0 +1,18 @@
+---
+# to run this playbook, use the following command:
+# "ansible-playbook l3-bgp-all.yml --verbose"
+# 
+# This playbook assumes that NCLU has been installed and you are running CL 3.1 minimum
+#
+# to run commands individually, use the following:
+# ansible network -a "clagctl"
+- hosts: network
+  tasks:
+    - name: net show bgp neighbors
+      command: net show bgp neighbors
+ 
+    - name: net show bgp summary
+      command: net show bgp summary
+
+    - name: show ip route
+      command: ip route
